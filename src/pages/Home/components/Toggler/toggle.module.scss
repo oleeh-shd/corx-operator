@@ -1,0 +1,31 @@
+.toggleContainer {
+    width: 50px;
+    height: 26px;
+    background-color: #c9d3dd;
+    transition: all 0.1s ease-in-out;
+    position: relative;
+    border-radius: 19px;
+    cursor: pointer;
+}
+
+.isOpen {
+    background-color: #000000;
+
+    .thumb {
+        transform: translate(calc(45px - 19px), -50%);
+    }
+}
+
+
+.thumb {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 19px;
+    width: 19px;
+    border-radius: 100%;
+    background-color: #ffffff;
+    transition: all 0.1s ease-in-out;
+    transform: translate(0, -50%);
+    margin-left: 3px;
+}

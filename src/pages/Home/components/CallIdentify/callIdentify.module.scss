@@ -1,0 +1,59 @@
+.resultWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #bc0000;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 48px;
+}
+
+.isSuccess {
+  background-color: #18830f;
+  color: #72bb79;
+}
+
+.isEnroll {
+  background-color: #ffffff;
+  color: #72bb79;
+}
+
+.descriptionText {
+  font-weight: 400;
+  font-size: 14px;
+  color: #FFFFFF;
+  margin-top: 22px;
+}
+
+.statusIcon {
+  width: 70px;
+  height: 51px;
+  margin-top: 46px;
+}
+
+.isSuccessIcon {
+  margin-left: 20px;
+}
+
+.isEnrollIcon {
+  width: 98px;
+  height: 123px;
+}
+
+.statusText {
+  font-weight: 400;
+  font-size: 35px;
+  color: #FFFFFF;
+  text-align: center;
+  margin-top: 7px;
+}
+
+.isEnrollText{
+  font-size: 24px;
+  color: #101010;
+}
+
+.homeScreenBtn {
+  width: 250px;
+  margin-top: 50px;
+}

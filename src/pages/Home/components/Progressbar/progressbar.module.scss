@@ -1,0 +1,134 @@
+.CircularProgressbarPath {
+    stroke: red;
+}
+.CircularProgressbarTrail {
+    stroke: gray;
+}
+.CircularProgressbarText {
+    fill: yellow;
+}
+.CircularProgressbarBackground {
+    fill: green;
+}
+
+.progressbarContainer {
+    width: 200px;
+    height: 642px;
+}
+
+.recordTime {
+    font-weight: 400;
+    font-size: 20px;
+    text-align: center;
+    color: #101010;
+    margin: 28px 0 20px 0;
+}
+
+.progressbarWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.voiceRecorder {
+    width: 132px;
+    height: 70px;
+}
+
+.progressText {
+    font-weight: 500;
+    font-size: 18px;
+    text-align: center;
+    color: #101010;
+    margin: 59px 0 52px 0;
+}
+
+.modify {
+    margin-bottom: 69px;
+}
+
+.additionalLoader {
+    width: 164px;
+    height: 164px;
+    animation: rotation 3s infinite linear;
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+.pulseContainer {
+    position: relative;
+    overflow: hidden;
+}
+
+.pulseWrapper {
+    position: relative;
+    left: 0;
+    top: 0;
+}
+
+.empty,
+.filled {
+    width: 130px;
+    height: 70px;
+}
+
+.empty {
+    fill: #bc0000;
+}
+
+.wrapperFilled {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    overflow: hidden;
+    transition: width 0.6s linear;
+}
+
+.faceContainer {
+    position: relative;
+    width: 146px;
+    height: 146px;
+    background-color: #e5e5e5;
+    border-radius: 10px;
+}
+
+.face {
+    position: relative;
+    width: 146px;
+    height: 146px;
+    z-index: 2;
+    border-radius: 10px;
+    background: no-repeat bottom url('../../../../assets/full.svg');
+    animation: filling 25s ease-in-out infinite;
+    background-position-y: 100px;
+    background-size: 200px 80%;
+}
+
+@keyframes filling {
+    25% {
+        background-size: 500px 100%;
+        background-position-y: 75px;
+    }
+    50% {
+        background-size: 500px 120%;
+        background-position-y: 20px;
+    }
+
+    75% {
+        background-size: 500px 185%;
+        background-position-y: -50px;
+    }
+    100% {
+        background-size: 500px 250%;
+        background-position-y: -130px;
+    }
+}
