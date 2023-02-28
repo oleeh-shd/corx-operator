@@ -1,0 +1,32 @@
+ .buttonWrapper {
+   display: flex;
+
+   div {
+     margin: 0 10px;
+     border-radius: 20px;
+     height: 40px;
+   }
+ }
+
+ .settings {
+   display: flex;
+   flex-direction: column;
+   margin-top: 20px;
+ }
+
+ .wrapperSetting {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: flex-start;
+   margin-bottom: 10px;
+   width: 300px;
+   padding-left: 30px;
+ }
+
+ .titleToggle {
+   font-size: 20px;
+   font-weight: 700;
+   margin-left: 10px;
+   color: #29323d;
+ }
