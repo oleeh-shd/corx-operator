@@ -1,182 +1,111 @@
-.result-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #bc0000;
-    width: 100%;
-    height: 100%;
-    padding-bottom: 48px;
-
-    &.isSuccess {
-        background-color: #18830f;
-        color: #72bb79;
-    }
-
-    &.isEnroll {
-        background-color: #ffffff;
-        color: #72bb79;
-    }
+.resultFaceWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1240px;
 }
 
-.title-page {
-    color: #1464f7;
-    font-size: 26px;
-    font-weight: bold;
+.speechWrapper {
+  width: calc(100% - 50px);
+  height: 260px;
+  padding: 25px;
+  display: flex;
+  justify-content: space-around;
 }
 
-.status-icon {
-    width: 70px;
-    height: 51px;
-    margin-top: 46px;
 
-    &.isSuccess {
-        margin-left: 20px;
-    }
-
-    &.isEnroll {
-        width: 98px;
-        height: 123px;
-    }
+.speechContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center
 }
 
-.status-text {
-    font-weight: 400;
-    font-size: 35px;
-    color: #FFFFFF;
-    text-align: center;
-    margin-top: 7px;
-
-    &.isEnroll {
-        font-size: 24px;
-        color: #101010;
-    }
+.speechTitle {
+  text-align: center;
+  font-weight: 400;
+  font-size: 18px;
+  color: #000000;
+  margin-top: 37px;
 }
 
-.generated-ageGender-text {
-    padding: 25px 34px ;
-}
-.generated-face-text {
-    font-weight: 700;
-    font-size: 20px;
-    color: #101010;
-    padding: 26px 0 0 35px;
+.wr {
+  border-left: 1px solid #e6e6e6;
+  margin: 0 10px;
 }
 
-.content-text-wrapper {
-    display: flex;
-    gap: 23px;
+.imageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.title-wrapper {
-    width: 60px;
-    font-family: 'Montserrat', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    color: #5C5F65;
+.spacing {
+  padding: 0 16px 20px 16px;
 }
 
-.title-content {
-    font-family: 'Montserrat', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    color: #101010;
+.generatedAgeGenderText {
+  padding: 25px 34px;
 }
 
-.description-text {
-    font-weight: 400;
-    font-size: 14px;
-    color: #FFFFFF;
-    margin-top: 22px;
+.contentTextWrapper {
+  display: flex;
+  gap: 23px;
 }
 
-.home-screen-btn {
-    width: 250px;
-    margin-top: 50px;
+.titleWrapper {
+  width: 60px;
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #5C5F65;
 }
 
-.result-face-wrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 1240px;
+.titleContent {
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #101010;
 }
 
-.speech-title {
-    text-align: center;
-    font-weight: 400;
-    font-size: 18px;
-    color: #000000;
-    margin-top: 37px;
+.actionWrapper {
+  width: 100%;
+  display: flex;
+  box-shadow: 0 -1.5px 14px rgba(0, 0, 0, 0.25);
 }
 
-.speech-wrapper {
-    width: calc(100% - 50px);
-    height: 260px;
-    padding: 25px;
-    display: flex;
-    justify-content: space-around;
+.actionContainer {
+  width: 33%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  border: 1px solid #D0D0D0;
+  cursor: pointer;
 }
 
-.action-wrapper {
-    width: 100%;
-    display: flex;
-    box-shadow: 0 -1.5px 14px rgba(0, 0, 0, 0.25);
+.restartTitle {
+  font-weight: 400;
+  font-size: 12px;
+  color: #101010;
+  text-align: center;
+  margin-top: 8px;
 }
 
-.restart-title {
-    font-weight: 400;
-    font-size: 12px;
-    color: #101010;
-    text-align: center;
-    margin-top: 8px;
+.additionalLoader {
+  width: 164px;
+  height: 164px;
+  animation: rotation 3s infinite linear;
 }
 
-.action-container {
-    width: 33%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 18px;
-    border: 1px solid #D0D0D0;
-    cursor: pointer;
-
-}
-
-.face-wrapper {
-    display: flex;
-    justify-content: space-between;
-    height: 314px;
-    width: 100%;
-}
-
-.image-container {
-    padding: 0 2px 16px 0;
-
-    width: 93px;
-    height: 93px;
-
-    & canvas {
-        border: 1px solid #C0C0C0;
-    }
-
-    & img {
-        width: 93px;
-        height: 93px;
-        top: 0;
-        left: 0;
-        cursor: pointer;
-    }
-}
-
-.generated-face {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 93px;
-    height: 93px;
-    image-rendering: pixelated;
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
 }

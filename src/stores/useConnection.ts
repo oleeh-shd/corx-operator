@@ -5,9 +5,12 @@ interface ConnectionStore {
   socket: Socket;
 }
 
+const token =
+  localStorage.getItem('token') || sessionStorage.getItem('token');
+
 const socket = io('ws://localhost:8088/', {
   auth: {
-    token: 'asdfasdfasdfasd',
+    token: token || 'asdfasdfasdfasd',
   },
 });
 

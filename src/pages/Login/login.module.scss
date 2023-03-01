@@ -1,0 +1,58 @@
+.loginWrapper {
+  display: flex;
+  align-items: center;
+  width: 300px;
+  flex-direction: column;
+  padding-top: 58px;
+}
+
+.logoWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 55px 0 59px 0;
+  background-color: #101010;
+}
+
+.logoTitle {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 35px;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  margin: 4px 0 0;
+}
+
+.loginText {
+  font-weight: 600;
+  font-size: 30px;
+  color: #101010;
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+.inputText {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #101010;
+  width: 100%;
+  text-align: start;
+  margin-bottom: 8px;
+}
+
+.toggleWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.textToggle {
+  font-size: 20px;
+  font-weight: 700;
+  margin-left: 10px;
+  color: #29323d;
+}

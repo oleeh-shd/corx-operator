@@ -6,6 +6,7 @@ import { useVerifyInfoStore } from '../../stores/useVerifyInfo';
 import { useEnrollInfoStore } from '../../stores/useEnrollInfo';
 import { Socket } from 'socket.io-client';
 import { TaskType } from '../../stores/sharedTypes';
+import { Navigate } from 'react-router-dom';
 
 const emitCommand = (
   socket: Socket,
@@ -33,6 +34,9 @@ export const Home = () => {
   const { updateVerifyInfo, ...verifyInfo } = useVerifyInfoStore();
   const { updateEnrollInfo, ...enrollInfo } = useEnrollInfoStore();
 
+  const isAuth =
+    localStorage.getItem('token') || sessionStorage.getItem('token');
+
   useEffect(() => {
     socket.on('connect', () => {
       console.log('connected');
@@ -58,7 +62,8 @@ export const Home = () => {
 
   return (
     <>
-      <MainScreen />
+      {!isAuth && <Navigate to={'/login'} replace={true}/>}
+      <MainScreen/>
       <div>Call status: {callInfo.call_status}</div>
       <div>Verify status: {verifyInfo.task_status}</div>
       <button

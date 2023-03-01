@@ -7,3 +7,8 @@ export interface MetaData {
   org_slug: string;
   client_id: string;
 }
+
+export interface LoginData {
+  access_token: string,
+  refresh_token: string
+}
