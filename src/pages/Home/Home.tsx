@@ -6,11 +6,15 @@ import { useVerifyInfoStore } from '../../stores/useVerifyInfo';
 import { useEnrollInfoStore } from '../../stores/useEnrollInfo';
 import { OngoingScreen } from './components/OngoingScreen/OngoingScreen';
 import { OperationScreen } from './components/OperationScreen/OperationScreen';
+import { Navigate } from 'react-router-dom';
 
 export const Home = () => {
   const { updateCallInfo, ...callInfo } = useCallInfoStore();
   const updateVerifyInfo = useVerifyInfoStore((state) => state.updateVerifyInfo);
   const updateEnrollInfo = useEnrollInfoStore((state) => state.updateEnrollInfo);
+
+  const isAuth =
+    localStorage.getItem('token') || sessionStorage.getItem('token');
 
   useEffect(() => {
     socket.on('connect', () => {
@@ -41,6 +45,7 @@ export const Home = () => {
 
   return callInfo.call_status === 'started' ? (
     <>
+      {!isAuth && <Navigate to={'/login'} replace={true}/>}
       <OngoingScreen callerPhoneNumber={callInfo.call_data.from} />
       <OperationScreen />
     </>
