@@ -6,8 +6,8 @@ import voiceGray from '../../../../assets/voice_gray.svg';
 import notVoiceGray from '../../../../assets/voice-not.svg';
 import update from '../../../..//assets/update.svg';
 import { useNavigate } from 'react-router-dom';
+import { createdAt } from '../../../../utils/helpers/createdAt';
 import Button from '../Button/Button';
-import moment from 'moment';
 
 import styles from './CallerInfo.module.scss';
 
@@ -67,7 +67,7 @@ const CallerInfo: FC<CallerInfoProps> = ({
           <img src={verified ? voiceGray : notVoiceGray} alt="voice"></img>
           <div className={styles.signatureData}>
             {verified && created
-              ? `Voice signature created on: ${moment(created)}`
+              ? `Voice signature created on: ${createdAt(created)}`
               : 'Voice signature not created'}
           </div>
         </div>
