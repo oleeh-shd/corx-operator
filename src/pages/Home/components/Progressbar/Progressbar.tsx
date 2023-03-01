@@ -1,4 +1,4 @@
-import React, {useEffect, useState, FC} from 'react';
+import React, { useEffect, useState, FC } from 'react';
 
 import styles from './progressbar.module.scss';
 import 'react-circular-progressbar/dist/styles.css';
@@ -8,106 +8,98 @@ import pulseFilled from '../../../../assets/filled.svg';
 import faceSecond from '../../../../assets/face_2.svg';
 import moment from 'moment';
 import cn from 'classnames';
-import {timeConvert} from "../../../../utils/helpers/timeConvertor";
-import {CircularProgressbar} from "react-circular-progressbar";
-import {CircularProgressbarStyles} from "react-circular-progressbar/dist/types";
+import { timeConvert } from '../../../../utils/helpers/timeConvertor';
+import { CircularProgressbar } from 'react-circular-progressbar';
+import { CircularProgressbarStyles } from 'react-circular-progressbar/dist/types';
 
 type ProgressBarProps = {
-    timeInSeconds: number;
-    counterTimeEnded: () => void;
-    screenType: string;
-    vadSeconds: number;
-    onUpdate: (value: number) => void;
-}
+  timeInSeconds: number;
+  counterTimeEnded: () => void;
+  screenType: string;
+  vadSeconds: number;
+  onUpdate: (value: number) => void;
+};
 const Progressbar: FC<ProgressBarProps> = ({
-   timeInSeconds,
-   counterTimeEnded,
-   screenType,
-   onUpdate,
-   vadSeconds,
+  timeInSeconds,
+  counterTimeEnded,
+  screenType,
+  onUpdate,
+  vadSeconds,
 }) => {
-    const [number, setNumber] = useState(0);
-    const [counterEnded, setCounterEnded] = useState(false);
-    const [displayLoader, setDisplayLoader] = useState(false);
-    const ADDITIONAL_WAITING_TIME = 10;
+  const [number, setNumber] = useState(0);
+  const [counterEnded, setCounterEnded] = useState(false);
+  const [displayLoader, setDisplayLoader] = useState(false);
+  const ADDITIONAL_WAITING_TIME = 10;
 
-    const [width, setWidth] = useState(0);
+  const [width, setWidth] = useState(0);
 
+  const getPulseWidth = (num: number) => 130 / num;
 
-    const getPulseWidth = (num: number) => 130 / num;
+  useEffect(() => {
+    if (number >= timeInSeconds) {
+      setDisplayLoader(true);
+      setTimeout(() => setCounterEnded(true), ADDITIONAL_WAITING_TIME);
+      return;
+    }
 
-    useEffect(() => {
-        if (number >= timeInSeconds) {
-            setDisplayLoader(true);
-            setTimeout(() => setCounterEnded(true), ADDITIONAL_WAITING_TIME);
-            return;
-        }
+    const interval = setInterval(() => {
+      onUpdate(number + 1);
+      setNumber(number + 1);
+      setWidth((prev) => prev + getPulseWidth(screenType === 'enroll' ? 20 : 10));
+    }, 1000);
 
-        const interval = setInterval(() => {
-            onUpdate(number + 1);
-            setNumber(number + 1);
-            setWidth(
-                prev => prev + getPulseWidth(screenType === 'enroll' ? 20 : 10)
-            );
-        }, 1000);
+    return () => clearInterval(interval);
+  }, [number]);
 
-        return () => clearInterval(interval);
-    }, [number]);
+  useEffect(() => {
+    if (counterEnded) {
+      counterTimeEnded();
+    }
+  }, [counterEnded]);
 
-    useEffect(() => {
-        if (counterEnded) {
-            counterTimeEnded();
-        }
-    }, [counterEnded]);
+  return (
+    <>
+      {screenType === 'enroll' ? (
+        <p className={cn(styles.progressText, styles.modify)}>Creating voice signature.</p>
+      ) : (
+        ''
+      )}
 
+      {screenType === 'verify' ? (
+        <p className={styles.progressText}>Verifying caller’s identity</p>
+      ) : (
+        ''
+      )}
 
-    return (
-        <>
-            {screenType === 'enroll' ? (
-                <p className={cn(styles.progressText, styles.modify)}>
-                    Creating voice signature.
-                </p>
-            ) : ('')}
-
-            {screenType === 'verify' ? (
-                <p className={styles.progressText}>Verifying caller’s identity</p>
-            ) : ('')}
-
-            <div className={styles.progressbarContainer}>
-                {/*{displayLoader ? (*/}
-                <div className={styles.progressbarWrapper}>
-                    {screenType !== 'enroll' ? (
-                        <img
-                            className={styles.additionalLoader}
-                            src={loaderImage}
-                            alt=""
-                        />
-                    ) : (
-                        <div className={styles.faceContainer}>
-                            <div className={styles.face}>
-                                <img src={faceSecond} alt="second-face"/>
-                            </div>
-                        </div>
-                    )}
-
-                    <div className={styles.recordTime}>{`00:${number > 9 ? number : `0${number}`}`}</div>
-                    <p>{timeConvert(vadSeconds)}</p>
-                    <p>{moment(vadSeconds).format("mm:ms")}</p>
-
-                    <div className={styles.pulseContainer}>
-                        <div className={styles.pulseWrapper}>
-                            <img className={styles.empty} src={pulseEmpty}/>
-                            <div
-                                className={styles.wrapperFilled}
-                                style={{width: `${vadSeconds}px`}}>
-                                <img className={styles.filled} src={pulseFilled}/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      <div className={styles.progressbarContainer}>
+        {/*{displayLoader ? (*/}
+        <div className={styles.progressbarWrapper}>
+          {screenType !== 'enroll' ? (
+            <img className={styles.additionalLoader} src={loaderImage} alt="" />
+          ) : (
+            <div className={styles.faceContainer}>
+              <div className={styles.face}>
+                <img src={faceSecond} alt="second-face" />
+              </div>
             </div>
-        </>
-    );
+          )}
+
+          <div className={styles.recordTime}>{`00:${number > 9 ? number : `0${number}`}`}</div>
+          {/* <p>{timeConvert(vadSeconds)}</p>
+                    <p>{moment(vadSeconds).format("mm:ms")}</p> */}
+
+          <div className={styles.pulseContainer}>
+            <div className={styles.pulseWrapper}>
+              <img className={styles.empty} src={pulseEmpty} />
+              <div className={styles.wrapperFilled} style={{ width: `${vadSeconds}px` }}>
+                <img className={styles.filled} src={pulseFilled} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Progressbar;

@@ -5,6 +5,7 @@ interface TaskData {
   enroll_signature: string;
   max_attempts: number;
   target_score: number;
+  is_success?: boolean;
 }
 
 interface VerifyInfo {
