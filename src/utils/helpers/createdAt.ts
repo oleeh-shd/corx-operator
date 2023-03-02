@@ -1,5 +1,5 @@
 import {capitalizeFirstLetter} from "./capitalizeFirstLetter";
-import {monthNames} from "./mothNames";
+import {monthNames} from "./monthNames";
 
 export const createdAt = (time: string) => {
  const date = new Date(time)
