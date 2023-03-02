@@ -46,7 +46,7 @@ export const Home = () => {
   return callInfo.call_status === 'started' ? (
     <>
       {!isAuth && <Navigate to={'/login'} replace={true}/>}
-      <OngoingScreen callerPhoneNumber={callInfo.call_data.from} />
+      <OngoingScreen phoneNumber={callInfo.call_data.from} />
       <OperationScreen />
     </>
   ) : (

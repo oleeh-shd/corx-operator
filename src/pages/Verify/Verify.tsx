@@ -9,16 +9,16 @@ import Progressbar from '../Home/components/Progressbar/Progressbar';
 
 export const Verify = () => {
   const navigate = useNavigate();
-  const callerPhoneNumber = useCallInfoStore((state) => state.call_data.from);
-  const clientName = useCallInfoStore((state) => state.call_data.client.name);
-  const callerId = useCallInfoStore((state) => state.call_data.client.claim_id);
   const callStatus = useCallInfoStore((state) => state.call_status);
-  const voiceSignature = useCallInfoStore((state) => state.call_data.client.dt_signature);
   const updateCallInfo = useCallInfoStore((state) => state.updateCallInfo);
 
   const taskStatus = useVerifyInfoStore((state) => state.task_status);
   const isSuccess = useVerifyInfoStore((state) => state.task_data.is_success);
   const updateVerifyInfo = useVerifyInfoStore((state) => state.updateVerifyInfo);
+
+  useEffect(() => {
+    callStatus === 'waiting' && navigate('/')
+  }, [callStatus])
 
   useEffect(() => {
     socket.on('event', (msg) => {
@@ -47,16 +47,7 @@ export const Verify = () => {
 
   return (
     <>
-      <CallerInfo
-        callerId={callerId}
-        name={`${clientName}`}
-        phone={callerPhoneNumber}
-        onClick={() => console.log(123)}
-        duration={'00:10'}
-        animated
-        verified={voiceSignature}
-        created={voiceSignature}
-      />
+      <CallerInfo animated />
       {taskStatus === 'finished' ? (
         <CallIdentify result={isSuccess ? 'voice-verified' : 'voice-not-verified'} />
       ) : (

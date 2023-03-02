@@ -87,7 +87,7 @@ const Progressbar: FC<ProgressBarProps> = ({
           <div className={styles.pulseContainer}>
             <div className={styles.pulseWrapper}>
               <img className={styles.empty} src={pulseEmpty} />
-              <div className={styles.wrapperFilled} style={{ width: `${number}px` }}>
+              <div className={styles.wrapperFilled} style={{ width: `${width}px` }}>
                 <img className={styles.filled} src={pulseFilled} />
               </div>
             </div>

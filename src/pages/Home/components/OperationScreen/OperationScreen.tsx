@@ -1,7 +1,6 @@
 import React, { ChangeEvent, FC, useState } from 'react';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
-import Toggle from '../Toggler/Toggle';
 
 import styles from './operationScreen.module.scss';
 import { useCallInfoStore } from '../../../../stores/useCallInfo';
@@ -42,7 +41,7 @@ export const OperationScreen: FC = () => {
 
   return (
     <div>
-      <div style={{ width: 300 }}>
+      <div className={styles.operationWrapper}>
         <Input
           placeholder="Enter speaker name"
           value={speakerName}

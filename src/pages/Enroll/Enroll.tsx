@@ -9,16 +9,16 @@ import Progressbar from '../Home/components/Progressbar/Progressbar';
 
 export const Enroll = () => {
   const navigate = useNavigate();
-  const callerPhoneNumber = useCallInfoStore((state) => state.call_data.from);
-  const clientName = useCallInfoStore((state) => state.call_data.client.name);
-  const callerId = useCallInfoStore((state) => state.call_data.client.claim_id);
   const callStatus = useCallInfoStore((state) => state.call_status);
-  const voiceSignature = useCallInfoStore((state) => state.call_data.client.dt_signature);
-  const updateCallInfo = useCallInfoStore((state) => state.updateCallInfo);
+   const updateCallInfo = useCallInfoStore((state) => state.updateCallInfo);
 
   const taskStatus = useEnrollInfoStore((state) => state.task_status);
   const isSuccess = useEnrollInfoStore((state) => state.task_data.is_success);
   const updateEnrollInfo = useEnrollInfoStore((state) => state.updateEnrollInfo);
+
+  useEffect(() => {
+    callStatus === 'waiting' && navigate('/')
+  }, [callStatus])
 
   useEffect(() => {
     socket.on('event', (msg) => {
@@ -47,16 +47,7 @@ export const Enroll = () => {
 
   return (
     <>
-      <CallerInfo
-        callerId={callerId}
-        name={`${clientName}`}
-        phone={callerPhoneNumber}
-        onClick={() => console.log(123)}
-        duration={'00:10'}
-        animated
-        verified={voiceSignature}
-        created={voiceSignature}
-      />
+      <CallerInfo animated />
       {taskStatus === 'finished' ? (
         <CallIdentify result={isSuccess ? 'enroll-passed' : 'enroll-not-passed'} />
       ) : (
