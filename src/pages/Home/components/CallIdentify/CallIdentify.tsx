@@ -17,7 +17,7 @@ const CallIdentify: FC<ButtonProps> = ({result}) => {
             className={cn(styles.resultWrapper, isEnroll && styles.isEnroll, isSuccess && styles.isSuccess)}>
             <img
                 className={cn(styles.statusIcon,
-                    styles.isSuccessIcon, result === 'voice-verified' || isEnroll && styles.isEnrollIcon
+                 result === 'voice-verified' && styles.isSuccessIcon, result === 'voice-verified' || isEnroll && styles.isEnrollIcon
                 )}
                 src={icon}
                 alt=""

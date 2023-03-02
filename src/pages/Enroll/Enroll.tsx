@@ -2,19 +2,19 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCallInfoStore } from '../../stores/useCallInfo';
 import { socket } from '../../utils/helpers/connection';
-import { useVerifyInfoStore } from '../../stores/useVerifyInfo';
+import { useEnrollInfoStore } from '../../stores/useEnrollInfo';
 import CallerInfo from '../Home/components/CallerInfo/CallerInfo';
 import CallIdentify from '../Home/components/CallIdentify/CallIdentify';
 import Progressbar from '../Home/components/Progressbar/Progressbar';
 
-export const Verify = () => {
+export const Enroll = () => {
   const navigate = useNavigate();
   const callStatus = useCallInfoStore((state) => state.call_status);
-  const updateCallInfo = useCallInfoStore((state) => state.updateCallInfo);
+   const updateCallInfo = useCallInfoStore((state) => state.updateCallInfo);
 
-  const taskStatus = useVerifyInfoStore((state) => state.task_status);
-  const isSuccess = useVerifyInfoStore((state) => state.task_data.is_success);
-  const updateVerifyInfo = useVerifyInfoStore((state) => state.updateVerifyInfo);
+  const taskStatus = useEnrollInfoStore((state) => state.task_status);
+  const isSuccess = useEnrollInfoStore((state) => state.task_data.is_success);
+  const updateEnrollInfo = useEnrollInfoStore((state) => state.updateEnrollInfo);
 
   useEffect(() => {
     callStatus === 'waiting' && navigate('/')
@@ -32,7 +32,7 @@ export const Verify = () => {
       }
 
       if (isTask) {
-        updateVerifyInfo(message);
+        updateEnrollInfo(message);
       }
     });
 
@@ -49,14 +49,14 @@ export const Verify = () => {
     <>
       <CallerInfo animated />
       {taskStatus === 'finished' ? (
-        <CallIdentify result={isSuccess ? 'voice-verified' : 'voice-not-verified'} />
+        <CallIdentify result={isSuccess ? 'enroll-passed' : 'enroll-not-passed'} />
       ) : (
         <Progressbar
           timeInSeconds={123}
           counterTimeEnded={() => console.log(123)}
           vadSeconds={10}
           onUpdate={() => console.log()}
-          screenType="verify"
+          screenType="enroll"
         />
       )}
     </>

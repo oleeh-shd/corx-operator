@@ -5,9 +5,9 @@ import waves from '../../../../assets/waves.svg';
 import styles from './OngoingScreen.module.scss';
 
 type OngoingScreenProps = {
-  callerPhoneNumber: string;
+  phoneNumber: string;
 };
-export const OngoingScreen: FC<OngoingScreenProps> = ({ callerPhoneNumber }) => {
+export const OngoingScreen: FC<OngoingScreenProps> = ({ phoneNumber }) => {
   const [width, setWidth] = useState(window.innerWidth | 0);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export const OngoingScreen: FC<OngoingScreenProps> = ({ callerPhoneNumber }) => 
         <img className={styles.phone} src={phone} alt="logo" />
       </div>
       <div className={styles.callTitle}>Ongoing call from</div>
-      <div className={styles.phoneTittle}>{callerPhoneNumber}</div>
+      <div className={styles.phoneTittle}>{phoneNumber}</div>
       {width < 520 && <img alt="waves" className={styles.wavesWrapper} src={waves} />}
     </div>
   );

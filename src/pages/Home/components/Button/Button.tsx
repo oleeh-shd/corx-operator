@@ -13,9 +13,7 @@ const Button: FC<ButtonProps> = ({ titleBtn, onClick, isDisabled, styled }) => {
   return (
     <div
       onClick={onClick}
-      className={cn(styles.button, styled, {
-        isDisabled,
-      })}
+      className={cn(styles.button,isDisabled && styles.isDisabled, styled)}
     >
       {titleBtn}
     </div>

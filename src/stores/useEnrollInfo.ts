@@ -4,6 +4,7 @@ import { MetaData, TaskStatus, TaskType } from './sharedTypes';
 interface TaskData {
   buffer_seconds: number;
   client_id: string;
+  is_success?: boolean;
 }
 
 interface EnrollInfo {

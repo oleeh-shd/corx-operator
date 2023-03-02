@@ -6,16 +6,12 @@ import loaderImage from '../../../../assets/loader.png';
 import pulseEmpty from '../../../../assets/empty.svg';
 import pulseFilled from '../../../../assets/filled.svg';
 import faceSecond from '../../../../assets/face_2.svg';
-import moment from 'moment';
 import cn from 'classnames';
-import { timeConvert } from '../../../../utils/helpers/timeConvertor';
-import { CircularProgressbar } from 'react-circular-progressbar';
-import { CircularProgressbarStyles } from 'react-circular-progressbar/dist/types';
 
 type ProgressBarProps = {
   timeInSeconds: number;
   counterTimeEnded: () => void;
-  screenType: string;
+  screenType: 'enroll' | 'verify';
   vadSeconds: number;
   onUpdate: (value: number) => void;
 };
@@ -91,7 +87,7 @@ const Progressbar: FC<ProgressBarProps> = ({
           <div className={styles.pulseContainer}>
             <div className={styles.pulseWrapper}>
               <img className={styles.empty} src={pulseEmpty} />
-              <div className={styles.wrapperFilled} style={{ width: `${vadSeconds}px` }}>
+              <div className={styles.wrapperFilled} style={{ width: `${width}px` }}>
                 <img className={styles.filled} src={pulseFilled} />
               </div>
             </div>
