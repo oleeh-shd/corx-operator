@@ -5,3 +5,7 @@ export const socket = io('ws://localhost:8088/', {
     token: 'asdfasdfasdfasd',
   },
 });
+
+socket.on('disconnect', () => {
+  window.location.replace('/');
+})

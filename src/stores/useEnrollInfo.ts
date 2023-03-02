@@ -1,5 +1,7 @@
 import { create } from 'zustand';
-import { MetaData, TaskStatus, TaskType } from './sharedTypes';
+import { TaskStatuses } from '../utils/enum/taskStatuses';
+import { TaskType } from '../utils/enum/taskType';
+import { MetaData } from './sharedTypes';
 
 interface TaskData {
   buffer_seconds: number;
@@ -11,7 +13,7 @@ interface EnrollInfo {
   audio_id: string;
   task_id: string;
   task_type: TaskType;
-  task_status: TaskStatus;
+  task_status: TaskStatuses;
   task_data: TaskData;
   meta_data: MetaData;
 }
@@ -23,8 +25,8 @@ interface EnrollInfoStore extends EnrollInfo {
 export const useEnrollInfoStore = create<EnrollInfoStore>((set) => ({
   audio_id: '',
   task_id: '',
-  task_type: 'enroll',
-  task_status: 'waiting',
+  task_type: TaskType.ENROLL,
+  task_status: TaskStatuses.WAITING,
   task_data: {
     buffer_seconds: 5,
     client_id: '',

@@ -1,4 +1,5 @@
 import React, { ChangeEvent, FC, useState } from 'react';
+import { TaskType } from '../../../../utils/enum/taskType';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
 
@@ -17,11 +18,11 @@ export const OperationScreen: FC = () => {
   const [speakerName, setSpeakerName] = useState('');
 
   const onClickEnroll = () => {
-    emitCommand(socket, 'start', 'enroll', clientId, callId);
+    emitCommand(socket, 'start', TaskType.ENROLL, clientId, callId);
     navigate('/enroll');
   };
   const onClickVerify = () => {
-    emitCommand(socket, 'start', 'verify', clientId, callId);
+    emitCommand(socket, 'start', TaskType.VERIFY, clientId, callId);
     navigate('/verify');
   };
 

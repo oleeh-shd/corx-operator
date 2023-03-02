@@ -1,5 +1,5 @@
 import { Socket } from 'socket.io-client';
-import { TaskType } from '../../stores/sharedTypes';
+import { TaskType } from '../enum/taskType';
 
 export const emitCommand = (
   socket: Socket,

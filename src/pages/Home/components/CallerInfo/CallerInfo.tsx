@@ -7,34 +7,39 @@ import notVoiceGray from '../../../../assets/voice-not.svg';
 import update from '../../../..//assets/update.svg';
 import { useNavigate } from 'react-router-dom';
 import { useCallInfoStore } from '../../../../stores/useCallInfo';
-import { useEnrollInfoStore } from '../../../../stores/useEnrollInfo';
+import { useVadInfoStore } from '../../../../stores/useVadllInfo';
+import { TaskType } from '../../../../utils/enum/taskType';
+import { socket } from '../../../../utils/helpers/connection';
 import { createdAt } from '../../../../utils/helpers/createdAt';
+import { emitCommand } from '../../../../utils/helpers/emitCommand';
 import Button from '../Button/Button';
 
 import styles from './CallerInfo.module.scss';
 
 type CallerInfoProps = {
   animated?: boolean;
+  isFinished: boolean;
 };
 
 const CallerInfo: FC<CallerInfoProps> = ({
    animated,
+   isFinished,
 }) => {
-  //TODO time signature call verify or enroll
-  const duration = 10;
-  const onClick= () => console.log('Update button');
-
   const navigate = useNavigate();
 
   const callerPhoneNumber = useCallInfoStore((state) => state.call_data.from);
   const clientName = useCallInfoStore((state) => state.call_data.client.name);
   const callerId = useCallInfoStore((state) => state.call_data.client.claim_id);
   const voiceSignature = useCallInfoStore((state) => state.call_data.client.dt_signature);
-  const taskStatus = useEnrollInfoStore((state) => state.task_status);
+  const refreshVadTotalSeconds = useVadInfoStore((state) => state.refreshVadTotalSeconds);
 
-  const redirect = () => {
-    // resetVadSecondsApi();
-    navigate(-1);
+  const callId = useCallInfoStore((state) => state.call_id);
+  const clientId = useCallInfoStore((state) => state.call_data.client.client_id);
+
+  const onClickEnroll = () => {
+    refreshVadTotalSeconds()
+    emitCommand(socket, 'start', TaskType.ENROLL, clientId, callId);
+    navigate('/enroll');
   };
 
   return (
@@ -54,7 +59,8 @@ const CallerInfo: FC<CallerInfoProps> = ({
           ) : (
             <img src={pulse} alt="pulse"/>
           )}
-          <div>{duration}</div>
+          {/*  //TODO Add total call time after back-end return them*/}
+          {/*<div>{duration}</div>*/}
           {/* <p>{vadSeconds}</p> */}
         </div>
       </div>
@@ -67,18 +73,16 @@ const CallerInfo: FC<CallerInfoProps> = ({
               : 'Voice signature not created'}
           </div>
         </div>
-        {onClick && (
-          <Button
+        {isFinished && <Button
             styled={styles.styled}
-            onClick={() => (taskStatus === 'finished' ? onClick() : redirect())}
+            onClick={() => onClickEnroll()}
             titleBtn={
               <>
                 <img src={update} alt="update"></img>
                 <div>Update</div>
               </>
             }
-          ></Button>
-        )}
+          ></Button>}
       </div>
     </div>
   );

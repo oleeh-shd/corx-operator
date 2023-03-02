@@ -1,8 +1,12 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCallInfoStore } from '../../stores/useCallInfo';
-import { socket } from '../../utils/helpers/connection';
+import { useVadInfoStore } from '../../stores/useVadllInfo';
 import { useVerifyInfoStore } from '../../stores/useVerifyInfo';
+import { CallStatuses } from '../../utils/enum/callStatuses';
+import { TaskStatuses } from '../../utils/enum/taskStatuses';
+import { TaskType } from '../../utils/enum/taskType';
+import { socket } from '../../utils/helpers/connection';
 import CallerInfo from '../Home/components/CallerInfo/CallerInfo';
 import CallIdentify from '../Home/components/CallIdentify/CallIdentify';
 import Progressbar from '../Home/components/Progressbar/Progressbar';
@@ -15,9 +19,10 @@ export const Verify = () => {
   const taskStatus = useVerifyInfoStore((state) => state.task_status);
   const isSuccess = useVerifyInfoStore((state) => state.task_data.is_success);
   const updateVerifyInfo = useVerifyInfoStore((state) => state.updateVerifyInfo);
+  const updateVadInfo = useVadInfoStore((state) => state.updateVadInfo);
 
   useEffect(() => {
-    callStatus === 'waiting' && navigate('/')
+    callStatus === CallStatuses.WAITING && navigate('/')
   }, [callStatus])
 
   useEffect(() => {
@@ -26,6 +31,7 @@ export const Verify = () => {
 
       const isCall = Object.prototype.hasOwnProperty.call(message, 'call_id');
       const isTask = Object.prototype.hasOwnProperty.call(message, 'task_id');
+      const isVad = (message?.task_type === 'vad');
 
       if (isCall) {
         updateCallInfo(message);
@@ -34,9 +40,13 @@ export const Verify = () => {
       if (isTask) {
         updateVerifyInfo(message);
       }
+
+      if (isVad) {
+        updateVadInfo(message);
+      }
     });
 
-    if (callStatus === 'finished' && taskStatus !== 'finished') {
+    if (callStatus === CallStatuses.FINISHED && taskStatus !== TaskStatuses.FINISHED) {
       navigate('/');
     }
 
@@ -47,17 +57,11 @@ export const Verify = () => {
 
   return (
     <>
-      <CallerInfo animated />
-      {taskStatus === 'finished' ? (
+      <CallerInfo animated isFinished={taskStatus === TaskStatuses.FINISHED} />
+      {taskStatus === TaskStatuses.FINISHED ? (
         <CallIdentify result={isSuccess ? 'voice-verified' : 'voice-not-verified'} />
       ) : (
-        <Progressbar
-          timeInSeconds={123}
-          counterTimeEnded={() => console.log(123)}
-          vadSeconds={10}
-          onUpdate={() => console.log()}
-          screenType="verify"
-        />
+        <Progressbar screenType={TaskType.VERIFY} />
       )}
     </>
   );

@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
-import { MainScreen } from './components/MainScreen/MainScreen';
+import { Navigate } from 'react-router-dom';
 import { useCallInfoStore } from '../../stores/useCallInfo';
-import { socket } from '../../utils/helpers/connection';
-import { useVerifyInfoStore } from '../../stores/useVerifyInfo';
 import { useEnrollInfoStore } from '../../stores/useEnrollInfo';
+import { useVerifyInfoStore } from '../../stores/useVerifyInfo';
+import { CallStatuses } from '../../utils/enum/callStatuses';
+import { socket } from '../../utils/helpers/connection';
+import { MainScreen } from './components/MainScreen/MainScreen';
 import { OngoingScreen } from './components/OngoingScreen/OngoingScreen';
 import { OperationScreen } from './components/OperationScreen/OperationScreen';
-import { Navigate } from 'react-router-dom';
 
 export const Home = () => {
   const { updateCallInfo, ...callInfo } = useCallInfoStore();
@@ -43,7 +44,7 @@ export const Home = () => {
     };
   }, []);
 
-  return callInfo.call_status === 'started' ? (
+  return callInfo.call_status === CallStatuses.STARTED ? (
     <>
       {!isAuth && <Navigate to={'/login'} replace={true}/>}
       <OngoingScreen phoneNumber={callInfo.call_data.from} />
