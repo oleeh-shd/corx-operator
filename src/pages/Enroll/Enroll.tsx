@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useCallInfoStore } from '../../stores/useCallInfo';
 import { useEnrollInfoStore } from '../../stores/useEnrollInfo';
 import { useVadInfoStore } from '../../stores/useVadllInfo';
-import { CallStatuses } from '../../utils/enum/callStatuses';
-import { TaskStatuses } from '../../utils/enum/taskStatuses';
+import { CallStatus } from '../../utils/enum/callStatuses';
+ import { TaskStatuses } from '../../utils/enum/taskStatuses';
 import { TaskType } from '../../utils/enum/taskType';
 import { socket } from '../../utils/helpers/connection';
 import CallerInfo from '../Home/components/CallerInfo/CallerInfo';
@@ -22,7 +22,7 @@ export const Enroll = () => {
   const updateVadInfo = useVadInfoStore((state) => state.updateVadInfo);
 
   useEffect(() => {
-    callStatus === CallStatuses.WAITING && navigate('/')
+    callStatus === CallStatus.WAITING && navigate('/')
   }, [callStatus])
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export const Enroll = () => {
       }
     });
 
-    if (callStatus === CallStatuses.FINISHED && taskStatus !== TaskStatuses.FINISHED) {
+    if (callStatus === CallStatus.FINISHED && taskStatus !== TaskStatuses.FINISHED) {
       navigate('/');
     }
 

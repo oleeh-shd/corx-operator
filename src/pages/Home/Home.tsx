@@ -3,8 +3,8 @@ import { Navigate } from 'react-router-dom';
 import { useCallInfoStore } from '../../stores/useCallInfo';
 import { useEnrollInfoStore } from '../../stores/useEnrollInfo';
 import { useVerifyInfoStore } from '../../stores/useVerifyInfo';
-import { CallStatuses } from '../../utils/enum/callStatuses';
-import { socket } from '../../utils/helpers/connection';
+import { CallStatus } from '../../utils/enum/callStatuses';
+ import { socket } from '../../utils/helpers/connection';
 import { MainScreen } from './components/MainScreen/MainScreen';
 import { OngoingScreen } from './components/OngoingScreen/OngoingScreen';
 import { OperationScreen } from './components/OperationScreen/OperationScreen';
@@ -44,7 +44,7 @@ export const Home = () => {
     };
   }, []);
 
-  return callInfo.call_status === CallStatuses.STARTED ? (
+  return callInfo.call_status === CallStatus.STARTED ? (
     <>
       {!isAuth && <Navigate to={'/login'} replace={true}/>}
       <OngoingScreen phoneNumber={callInfo.call_data.from} />
