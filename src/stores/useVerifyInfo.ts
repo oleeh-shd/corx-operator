@@ -10,7 +10,7 @@ interface TaskData {
   is_success?: boolean;
 }
 
-interface VerifyInfo {
+export interface VerifyInfo {
   audio_id: string;
   task_id: string;
   task_type: TaskType;

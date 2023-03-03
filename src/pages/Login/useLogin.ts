@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { NotificationManager } from 'react-notifications';
 import loginApi from '../../services/loginApi';
 
-
 const useLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -12,8 +11,7 @@ const useLogin = () => {
 
   const [isStaySingIn, setIsStaySingIn] = useState(true);
 
-  const isAuth =
-    localStorage.getItem('token') || sessionStorage.getItem('token');
+  const isAuth = localStorage.getItem('token') || sessionStorage.getItem('token');
 
   const navigate = useNavigate();
 
@@ -24,7 +22,7 @@ const useLogin = () => {
   }, []);
 
   const handleToggle = useCallback(() => {
-    setIsStaySingIn(isStaySingIn => !isStaySingIn);
+    setIsStaySingIn((isStaySingIn) => !isStaySingIn);
   }, []);
 
   function validateEmail(email: string) {
@@ -39,10 +37,9 @@ const useLogin = () => {
       const { access_token } = response;
       saveToken(access_token);
       navigate('/');
-
     } catch (error) {
       setStatus(error as string);
-      NotificationManager.error(`Error message:  ${error}`)
+      NotificationManager.error(`Error message:  ${error}`);
     }
   };
 

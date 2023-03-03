@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { CallStatus } from '../utils/enum/callStatuses';
 
-
 interface ClientData {
   claim_id: string;
   client_id: string;
@@ -18,7 +17,7 @@ interface CallData {
   client: ClientData;
 }
 
-interface CallInfo {
+export interface CallInfo {
   call_id: string;
   call_dt: number;
   call_status: CallStatus;

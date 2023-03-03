@@ -12,11 +12,10 @@ import faceSecond from '../../../../assets/face_2.svg';
 import cn from 'classnames';
 
 type ProgressBarProps = {
-  screenType: TaskType.ENROLL | TaskType.VERIFY;
+  screenType: TaskType;
 };
-const Progressbar: FC<ProgressBarProps> = ({
-   screenType,
- }) => {
+
+const Progressbar: FC<ProgressBarProps> = ({ screenType }) => {
   const [width, setWidth] = useState(0);
   const required_seconds = useVadInfoStore((state) => state.task_data.required_seconds);
   const total_seconds = useVadInfoStore((state) => state.task_data.total_seconds);
@@ -31,13 +30,13 @@ const Progressbar: FC<ProgressBarProps> = ({
 
   return (
     <>
-      {screenType === 'enroll' ? (
+      {screenType === TaskType.ENROLL ? (
         <p className={cn(styles.progressText, styles.modify)}>Creating voice signature.</p>
       ) : (
         ''
       )}
 
-      {screenType === 'verify' ? (
+      {screenType === TaskType.VERIFY ? (
         <p className={styles.progressText}>Verifying caller’s identity</p>
       ) : (
         ''
@@ -46,21 +45,21 @@ const Progressbar: FC<ProgressBarProps> = ({
       <div className={styles.progressbarContainer}>
         {/*{displayLoader ? (*/}
         <div className={styles.progressbarWrapper}>
-          {screenType !== 'enroll' ? (
-            <img className={styles.additionalLoader} src={loaderImage} alt=""/>
+          {screenType !== TaskType.ENROLL ? (
+            <img className={styles.additionalLoader} src={loaderImage} alt="" />
           ) : (
             <div className={styles.faceContainer}>
               <div className={styles.face}>
-                <img src={faceSecond} alt="second-face"/>
+                <img src={faceSecond} alt="second-face" />
               </div>
             </div>
           )}
           <p className={styles.seconds}>{timeConvert(total_seconds)}</p>
           <div className={styles.pulseContainer}>
             <div className={styles.pulseWrapper}>
-              <img className={styles.empty} src={pulseEmpty}/>
+              <img className={styles.empty} src={pulseEmpty} />
               <div className={styles.wrapperFilled} style={{ width: `${width}px` }}>
-                <img className={styles.filled} src={pulseFilled}/>
+                <img className={styles.filled} src={pulseFilled} />
               </div>
             </div>
           </div>
