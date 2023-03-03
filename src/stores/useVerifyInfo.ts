@@ -1,5 +1,7 @@
 import { create } from 'zustand';
-import { MetaData, TaskStatus, TaskType } from './sharedTypes';
+import { TaskStatuses } from '../utils/enum/taskStatuses';
+import { TaskType } from '../utils/enum/taskType';
+import { MetaData } from './sharedTypes';
 
 interface TaskData {
   enroll_signature: string;
@@ -12,7 +14,7 @@ interface VerifyInfo {
   audio_id: string;
   task_id: string;
   task_type: TaskType;
-  task_status: TaskStatus;
+  task_status: TaskStatuses;
   task_data: TaskData;
   meta_data: MetaData;
 }
@@ -24,8 +26,8 @@ interface VerifyInfoStore extends VerifyInfo {
 export const useVerifyInfoStore = create<VerifyInfoStore>((set) => ({
   audio_id: '',
   task_id: '',
-  task_type: 'verify',
-  task_status: 'waiting',
+  task_type: TaskType.VERIFY,
+  task_status: TaskStatuses.WAITING,
   task_data: {
     enroll_signature: '',
     max_attempts: 3,

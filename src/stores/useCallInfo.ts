@@ -1,7 +1,6 @@
 import { create } from 'zustand';
-import { TaskStatus } from './sharedTypes';
+import { CallStatus } from '../utils/enum/callStatuses';
 
-type CallStatus = TaskStatus;
 
 interface ClientData {
   claim_id: string;
@@ -33,7 +32,7 @@ interface CallInfoStore extends CallInfo {
 export const useCallInfoStore = create<CallInfoStore>((set) => ({
   call_id: '',
   call_dt: 0,
-  call_status: 'waiting',
+  call_status: CallStatus.WAITING,
   call_data: {
     to: '',
     from: '',

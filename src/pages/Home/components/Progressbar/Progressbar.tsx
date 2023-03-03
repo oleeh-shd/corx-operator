@@ -1,4 +1,7 @@
 import React, { useEffect, useState, FC } from 'react';
+import { useVadInfoStore } from '../../../../stores/useVadllInfo';
+import { TaskType } from '../../../../utils/enum/taskType';
+import { timeConvert } from '../../../../utils/helpers/timeConvertor';
 
 import styles from './progressbar.module.scss';
 import 'react-circular-progressbar/dist/styles.css';
@@ -9,49 +12,22 @@ import faceSecond from '../../../../assets/face_2.svg';
 import cn from 'classnames';
 
 type ProgressBarProps = {
-  timeInSeconds: number;
-  counterTimeEnded: () => void;
-  screenType: 'enroll' | 'verify';
-  vadSeconds: number;
-  onUpdate: (value: number) => void;
+  screenType: TaskType.ENROLL | TaskType.VERIFY;
 };
 const Progressbar: FC<ProgressBarProps> = ({
-  timeInSeconds,
-  counterTimeEnded,
-  screenType,
-  onUpdate,
-  vadSeconds,
-}) => {
-  const [number, setNumber] = useState(0);
-  const [counterEnded, setCounterEnded] = useState(false);
-  const [displayLoader, setDisplayLoader] = useState(false);
-  const ADDITIONAL_WAITING_TIME = 10;
-
+   screenType,
+ }) => {
   const [width, setWidth] = useState(0);
+  const required_seconds = useVadInfoStore((state) => state.task_data.required_seconds);
+  const total_seconds = useVadInfoStore((state) => state.task_data.total_seconds);
 
   const getPulseWidth = (num: number) => 130 / num;
 
   useEffect(() => {
-    if (number >= timeInSeconds) {
-      setDisplayLoader(true);
-      setTimeout(() => setCounterEnded(true), ADDITIONAL_WAITING_TIME);
-      return;
+    if (required_seconds) {
+      setWidth((prev) => prev + getPulseWidth(required_seconds));
     }
-
-    const interval = setInterval(() => {
-      onUpdate(number + 1);
-      setNumber(number + 1);
-      setWidth((prev) => prev + getPulseWidth(screenType === 'enroll' ? 20 : 10));
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [number]);
-
-  useEffect(() => {
-    if (counterEnded) {
-      counterTimeEnded();
-    }
-  }, [counterEnded]);
+  }, [total_seconds]);
 
   return (
     <>
@@ -71,24 +47,20 @@ const Progressbar: FC<ProgressBarProps> = ({
         {/*{displayLoader ? (*/}
         <div className={styles.progressbarWrapper}>
           {screenType !== 'enroll' ? (
-            <img className={styles.additionalLoader} src={loaderImage} alt="" />
+            <img className={styles.additionalLoader} src={loaderImage} alt=""/>
           ) : (
             <div className={styles.faceContainer}>
               <div className={styles.face}>
-                <img src={faceSecond} alt="second-face" />
+                <img src={faceSecond} alt="second-face"/>
               </div>
             </div>
           )}
-
-          <div className={styles.recordTime}>{`00:${number > 9 ? number : `0${number}`}`}</div>
-          {/* <p>{timeConvert(vadSeconds)}</p>
-                    <p>{moment(vadSeconds).format("mm:ms")}</p> */}
-
+          <p className={styles.seconds}>{timeConvert(total_seconds)}</p>
           <div className={styles.pulseContainer}>
             <div className={styles.pulseWrapper}>
-              <img className={styles.empty} src={pulseEmpty} />
+              <img className={styles.empty} src={pulseEmpty}/>
               <div className={styles.wrapperFilled} style={{ width: `${width}px` }}>
-                <img className={styles.filled} src={pulseFilled} />
+                <img className={styles.filled} src={pulseFilled}/>
               </div>
             </div>
           </div>
