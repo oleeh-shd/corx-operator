@@ -4,7 +4,7 @@ import { CallStatus } from '../utils/enum/callStatuses';
 interface ClientData {
   claim_id: string;
   client_id: string;
-  dt_signature: string;
+  dt_signature: string | null;
   email: string | null;
   name: string | null;
 }
@@ -20,7 +20,7 @@ interface CallData {
 export interface CallInfo {
   call_id: string;
   call_dt: number;
-  call_status: CallStatus;
+  call_status: CallStatus | '';
   call_data: CallData;
 }
 
@@ -31,7 +31,7 @@ interface CallInfoStore extends CallInfo {
 export const useCallInfoStore = create<CallInfoStore>((set) => ({
   call_id: '',
   call_dt: 0,
-  call_status: CallStatus.WAITING,
+  call_status: '',
   call_data: {
     to: '',
     from: '',

@@ -3,14 +3,14 @@ import { TaskStatuses } from '../utils/enum/taskStatuses';
 import { TaskType } from '../utils/enum/taskType';
 
 interface TaskData {
-  "image_url": string;
+  image_url: string;
 }
 
 export interface VoiceToFaceInfo {
   audio_id: string;
   task_id: string;
   task_type: TaskType;
-  task_status: TaskStatuses;
+  task_status: TaskStatuses | '';
   task_data: TaskData;
 }
 
@@ -22,9 +22,9 @@ export const useVoiceToFaceInfoStore = create<VoiceToFaceInfoStore>((set) => ({
   audio_id: '',
   task_id: '',
   task_type: TaskType.VERIFY,
-  task_status: TaskStatuses.WAITING,
+  task_status: '',
   task_data: {
-    image_url: ''
+    image_url: '',
   },
   updateVoiceToFaceInfo: (newInfo: VoiceToFaceInfo) => set(newInfo),
 }));

@@ -32,7 +32,6 @@ export const Verify: FC = () => {
   const updateVerifyInfo = useVerifyInfoStore((state) => state.updateVerifyInfo);
   const updateVadInfo = useVadInfoStore((state) => state.updateVadInfo);
 
-
   const updateAgeInfo = useAgeInfoStore((state) => state.updateAgeInfo);
   const updateGenderInfo = useGenderInfoStore((state) => state.updateGenderInfo);
   const updateVoiceToFaceInfo = useVoiceToFaceInfoStore((state) => state.updateVoiceToFaceInfo);
@@ -54,14 +53,14 @@ export const Verify: FC = () => {
           updateAgeInfo,
           updateGenderInfo,
           updateVoiceToFaceInfo,
-          updateAntiSpoofInfo
+          updateAntiSpoofInfo,
         });
       }
     });
 
     if (
       (callStatus === CallStatus.FINISHED && taskStatus !== TaskStatuses.FINISHED) ||
-      callStatus === CallStatus.WAITING
+      callStatus === ''
     ) {
       navigate('/');
     }
@@ -75,37 +74,36 @@ export const Verify: FC = () => {
     const verifyResult = isSuccess
       ? ActionStatuses.VERIFIED
       : isTimeExceeded
-        ? ActionStatuses.TIMEOUT_EXCEEDED
-        : ActionStatuses.NOT_VERIFIED;
-
-    const spoofResult = spoofTaskStatus === TaskStatuses.FINISHED
-      ? isSpoof
-      ? ActionStatuses.FRAUD_DETECTED : ActionStatuses.VERIFIED
-      : isTimeExceeded
       ? ActionStatuses.TIMEOUT_EXCEEDED
       : ActionStatuses.NOT_VERIFIED;
 
-      return !isActiveAntiSpoof ? verifyResult : spoofResult;
-  }
+    const spoofResult =
+      spoofTaskStatus === TaskStatuses.FINISHED
+        ? isSpoof
+          ? ActionStatuses.FRAUD_DETECTED
+          : ActionStatuses.VERIFIED
+        : isTimeExceeded
+        ? ActionStatuses.TIMEOUT_EXCEEDED
+        : ActionStatuses.NOT_VERIFIED;
+
+    return !isActiveAntiSpoof ? verifyResult : spoofResult;
+  };
 
   const status = () => {
     if (isActiveAntiSpoof) {
-      return spoofTaskStatus === TaskStatuses.FINISHED || isTimeExceeded
+      return spoofTaskStatus === TaskStatuses.FINISHED || isTimeExceeded;
     } else {
-      return taskStatus === TaskStatuses.FINISHED || isTimeExceeded
+      return taskStatus === TaskStatuses.FINISHED || isTimeExceeded;
     }
-   }
+  };
   return (
     <>
       <CallerInfo animated isFinished={status()} />
       {status() ? (
-       <>
-         <CallIdentify result={checkResult()} />
-         <OperationResultScreen
-           result={checkResult()}
-           onRestart={() => console.log('') }
-         />
-       </>
+        <>
+          <CallIdentify result={checkResult()} />
+          <OperationResultScreen result={checkResult()} onRestart={() => console.log('')} />
+        </>
       ) : (
         <Progressbar screenType={TaskType.VERIFY} />
       )}

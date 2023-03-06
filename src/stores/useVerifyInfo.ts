@@ -14,7 +14,7 @@ export interface VerifyInfo {
   audio_id: string;
   task_id: string;
   task_type: TaskType;
-  task_status: TaskStatuses;
+  task_status: TaskStatuses | '';
   task_data: TaskData;
   meta_data: MetaData;
 }
@@ -27,7 +27,7 @@ export const useVerifyInfoStore = create<VerifyInfoStore>((set) => ({
   audio_id: '',
   task_id: '',
   task_type: TaskType.VERIFY,
-  task_status: TaskStatuses.WAITING,
+  task_status: '',
   task_data: {
     enroll_signature: '',
     max_attempts: 3,

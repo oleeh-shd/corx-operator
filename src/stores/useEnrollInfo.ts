@@ -13,7 +13,7 @@ export interface EnrollInfo {
   audio_id: string;
   task_id: string;
   task_type: TaskType;
-  task_status: TaskStatuses;
+  task_status: TaskStatuses | '';
   task_data: TaskData;
   meta_data: MetaData;
 }
@@ -26,7 +26,7 @@ export const useEnrollInfoStore = create<EnrollInfoStore>((set) => ({
   audio_id: '',
   task_id: '',
   task_type: TaskType.ENROLL,
-  task_status: TaskStatuses.WAITING,
+  task_status: '',
   task_data: {
     buffer_seconds: 5,
     client_id: '',

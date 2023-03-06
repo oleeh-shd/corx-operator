@@ -3,14 +3,14 @@ import { TaskStatuses } from '../utils/enum/taskStatuses';
 import { TaskType } from '../utils/enum/taskType';
 
 interface TaskData {
-  "is_spoof"?: boolean;
+  is_spoof?: boolean;
 }
 
 export interface AntiSpoofInfo {
   audio_id: string;
   task_id: string;
   task_type: TaskType;
-  task_status: TaskStatuses;
+  task_status: TaskStatuses | '';
   task_data: TaskData;
 }
 
@@ -22,7 +22,7 @@ export const useAntiSpoofInfoStore = create<AntiSpoofInfoStore>((set) => ({
   audio_id: '',
   task_id: '',
   task_type: TaskType.VERIFY,
-  task_status: TaskStatuses.WAITING,
+  task_status: '',
   task_data: {},
   updateAntiSpoofInfo: (newInfo: AntiSpoofInfo) => set(newInfo),
 }));

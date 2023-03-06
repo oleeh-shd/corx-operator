@@ -1,6 +1,6 @@
 export enum TaskStatuses {
   STARTED = 'started',
-  WAITING = 'waiting',
+  //   WAITING = 'waiting',
   FINISHED = 'finished',
+  ERROR = 'error',
 }
-

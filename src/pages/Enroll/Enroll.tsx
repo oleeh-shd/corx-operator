@@ -36,7 +36,7 @@ export const Enroll: FC = () => {
 
     if (
       (callStatus === CallStatus.FINISHED && taskStatus !== TaskStatuses.FINISHED) ||
-      callStatus === CallStatus.WAITING
+      callStatus === ''
     ) {
       navigate('/');
     }
