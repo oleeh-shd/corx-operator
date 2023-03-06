@@ -48,6 +48,8 @@ export const Enroll: FC = () => {
 
   const enrollResult = isTimeExceeded
     ? ActionStatuses.TIMEOUT_EXCEEDED
+    : taskStatus === TaskStatuses.ERROR
+    ? ActionStatuses.ENROLL_NOT_PASSED
     : ActionStatuses.ENROLL_PASSED;
 
   return (
