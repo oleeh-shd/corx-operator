@@ -1,8 +1,8 @@
 import { io } from 'socket.io-client';
 
-// const BACKEND_URL = 'wss://api.corx.corsound.ai';
+const BACKEND_URL = 'wss://api.corx.corsound.ai';
 
-export const socket = io(/*BACKEND_URL ||*/ 'ws://localhost:8088/', {
+export const socket = io(BACKEND_URL || 'ws://localhost:8088/', {
   auth: {
     token: 'asdfasdfasdfasd',
   },

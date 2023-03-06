@@ -3,10 +3,11 @@ import fraudDetectedIcon from '../../assets/fraud.svg';
 import successIcon from '../../assets/varifayed.svg';
 import enrollFailed from '../../assets/enroll_failed.svg';
 import enrollDone from '../../assets/enroll_done.svg';
+import { ActionStatuses } from '../enum/actionStatuses';
 
 export const statusesMap = new Map([
   [
-    'voice-not-verified',
+    ActionStatuses.NOT_VERIFIED,
     {
       text: 'Not verified',
       icon: errorIcon,
@@ -16,7 +17,7 @@ export const statusesMap = new Map([
     },
   ],
   [
-    'fraud-detected',
+    ActionStatuses.FRAUD_DETECTED,
     {
       text: 'Fraud',
       icon: fraudDetectedIcon,
@@ -26,7 +27,7 @@ export const statusesMap = new Map([
     },
   ],
   [
-    'voice-verified',
+    ActionStatuses.VERIFIED,
     {
       text: 'Verified',
       icon: successIcon,
@@ -36,7 +37,7 @@ export const statusesMap = new Map([
     },
   ],
   [
-    'timeout-exceeded',
+    ActionStatuses.TIMEOUT_EXCEEDED,
     {
       text: `The operation is not finished. Please, try again.`,
       icon: errorIcon,
@@ -46,7 +47,7 @@ export const statusesMap = new Map([
     },
   ],
   [
-    'enroll-not-passed',
+    ActionStatuses.ENROLL_NOT_PASSED,
     {
       text: 'Voice signature creation failed',
       icon: enrollFailed,
@@ -57,7 +58,7 @@ export const statusesMap = new Map([
     },
   ],
   [
-    'enroll-passed',
+    ActionStatuses.ENROLL_PASSED,
     {
       text: `Voice signature created successfully`,
       icon: enrollDone,
