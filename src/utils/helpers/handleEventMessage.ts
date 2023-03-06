@@ -19,18 +19,19 @@ export const handleEventMessage = (
   console.log(message);
 
   const isCall = Object.prototype.hasOwnProperty.call(message, 'call_id');
-  const isTask = Object.prototype.hasOwnProperty.call(message, 'task_id');
   const isVad = message?.task_type === TaskType.VAD;
+  const isEnroll = message?.task_type === TaskType.ENROLL;
+  const isVerify = message?.task_type === TaskType.VERIFY;
 
   if (isCall) {
     updateCallInfo(message);
   }
 
-  if (isTask && updateEnrollInfo) {
+  if (isEnroll && updateEnrollInfo) {
     updateEnrollInfo(message);
   }
 
-  if (isTask && updateVerifyInfo) {
+  if (isVerify && updateVerifyInfo) {
     updateVerifyInfo(message);
   }
 
