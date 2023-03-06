@@ -1,7 +1,9 @@
 import React, { ChangeEvent, FC, useState } from 'react';
+import { OperationInfo, useOperationInfoStore } from '../../../../stores/useOperationInfo';
 import { TaskType } from '../../../../utils/enum/taskType';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
+import Toggle from '../Toggler/Toggle';
 
 import styles from './operationScreen.module.scss';
 import { useCallInfoStore } from '../../../../stores/useCallInfo';
@@ -14,6 +16,10 @@ export const OperationScreen: FC = () => {
 
   const callId = useCallInfoStore((state) => state.call_id);
   const clientId = useCallInfoStore((state) => state.call_data.client.client_id);
+  const isActiveAgeGender = useOperationInfoStore((state) => state.isActiveAgeGender);
+  const isActiveAntiSpoof = useOperationInfoStore((state) => state.isActiveAntiSpoof);
+  const isActiveGenFace = useOperationInfoStore((state) => state.isActiveGenFace);
+  const updateOperationInfo = useOperationInfoStore((state) => state.updateOperationInfo);
 
   const [speakerName, setSpeakerName] = useState('');
 
@@ -23,22 +29,17 @@ export const OperationScreen: FC = () => {
   };
   const onClickVerify = () => {
     emitCommand(socket, 'start', TaskType.VERIFY, clientId, callId);
+    isActiveAntiSpoof && emitCommand(socket, 'start', TaskType.ANTI_SPOOF, callId);
+    isActiveAgeGender && emitCommand(socket, 'start', TaskType.AGE, callId);
+    isActiveAgeGender && emitCommand(socket, 'start', TaskType.GENDER, callId);
+    isActiveGenFace && emitCommand(socket, 'start', TaskType.VOICE_TO_FACE, callId);
+
     navigate('/verify');
   };
 
-  //   const [isActiveAntiSpoof, setIsActiveAntiSpoof] = useState(false);
-  //   const [isActiveGenFace, setIsActiveGenFace] = useState(false);
-  //   const [isActiveAgeGender, setIsActiveAgeGender] = useState(false);
-
-  //   const handleAntiSpoof = () => {
-  //     setIsActiveAntiSpoof((prev) => !prev);
-  //   };
-  //   const handleGenFace = () => {
-  //     setIsActiveGenFace((prev) => !prev);
-  //   };
-  //   const handleAgeGender = () => {
-  //     setIsActiveAgeGender((prev) => !prev);
-  //   };
+    const handleUpdate = (updateValue: Partial<OperationInfo>) => {
+      updateOperationInfo(updateValue);
+    };
 
   return (
     <div>
@@ -58,15 +59,15 @@ export const OperationScreen: FC = () => {
       </div>
       <div className={styles.settings}>
         <div className={styles.wrapperSetting}>
-          {/* <Toggle isOpened={isActiveAntiSpoof} onToggle={handleAntiSpoof} /> */}
+           <Toggle isOpened={isActiveAntiSpoof} onToggle={() =>handleUpdate({ isActiveAntiSpoof: !isActiveAntiSpoof})} />
           <div className={styles.titleToggle}>Anti-spoofing</div>
         </div>
         <div className={styles.wrapperSetting}>
-          {/* <Toggle onToggle={handleGenFace} isOpened={isActiveGenFace} /> */}
+           <Toggle onToggle={() =>handleUpdate({ isActiveGenFace: !isActiveGenFace})} isOpened={isActiveGenFace} />
           <div className={styles.titleToggle}>Generate Face</div>
         </div>
         <div className={styles.wrapperSetting}>
-          {/* <Toggle onToggle={handleAgeGender} isOpened={isActiveAgeGender} /> */}
+           <Toggle onToggle={() =>handleUpdate({ isActiveAgeGender: !isActiveAgeGender})} isOpened={isActiveAgeGender} />
           <div className={styles.titleToggle}>Age Gender</div>
         </div>
       </div>
