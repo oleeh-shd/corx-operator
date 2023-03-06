@@ -96,8 +96,9 @@
 }
 
 .additionalLoader {
-  width: 164px;
-  height: 164px;
+  margin-right: 9px;
+  width: 93px;
+  height: 93px;
   animation: rotation 3s infinite linear;
 }
 
@@ -108,4 +109,9 @@
   to {
     transform: rotate(359deg);
   }
+}
+
+
+.imageContainer {
+  display: flex;
 }
