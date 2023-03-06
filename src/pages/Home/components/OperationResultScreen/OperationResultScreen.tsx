@@ -11,31 +11,28 @@ import { useAgeInfoStore } from '../../../../stores/useAgeInfo';
 import { useGenderInfoStore } from '../../../../stores/useGenderInfo';
 import { useOperationInfoStore } from '../../../../stores/useOperationInfo';
 import { useVoiceToFaceInfoStore } from '../../../../stores/useVoiceToFaceInfo';
+import { ActionStatuses } from '../../../../utils/enum/actionStatuses';
 import { TaskStatuses } from '../../../../utils/enum/taskStatuses';
 
 import { period } from '../../../../utils/helpers/period';
 import styles from './operationResultScreen.module.scss';
 
 type ProgressBarProps = {
-   result: string;
-   onReset: () => void;
-   pixelSize?: number;
+  result: ActionStatuses | '/';
+  onRestart: () => void;
+  pixelSize?: number;
 }
 const OperationResultScreen: FC<ProgressBarProps> = ({
-       result,
-       onReset,
-       pixelSize = 10,
-
-}) => {
+   result,
+   onRestart,
+   pixelSize = 10,
+ }) => {
   const age = useAgeInfoStore((state) => state.task_data.age);
   const gender = useGenderInfoStore((state) => state.task_data.gender);
   const image_url = useVoiceToFaceInfoStore((state) => state.task_data.image_url);
-
   const isActiveGenFace = useOperationInfoStore((state) => state.isActiveGenFace);
   const isActiveAgeGender = useOperationInfoStore((state) => state.isActiveAgeGender);
-
   const imgTaskStatus = useVoiceToFaceInfoStore((state) => state.task_status);
-
 
   const [pixelationSize, setPixelSize] = useState(pixelSize);
 
@@ -53,7 +50,7 @@ const OperationResultScreen: FC<ProgressBarProps> = ({
   return (
     <div className={styles.resultFaceWrapper}>
       <div className={styles.speechWrapper}>
-        {result === 'fraud-detected' &&
+        {result === ActionStatuses.FRAUD_DETECTED &&
 					<div className={styles.speechContent}>
 						<img src={warning} alt="warning"/>
 						<div className={styles.speechTitle}>
@@ -62,18 +59,23 @@ const OperationResultScreen: FC<ProgressBarProps> = ({
 					</div>
         }
 
-        {(result === 'fraud-detected') && isActiveGenFace && <div className={styles.wr}></div>}
-        {<div className={styles.imageWrapper} style={result !== 'fraud-detected' ? {
+        {(result === ActionStatuses.FRAUD_DETECTED) && isActiveGenFace && <div className={styles.wr}></div>}
+        {<div className={cn(styles.imageWrapper)} style={
+
+          result !== ActionStatuses.FRAUD_DETECTED ? {
+          display: !isActiveAgeGender && !isActiveGenFace ? 'none' : 'flex',
           flexDirection: 'row-reverse',
           alignItems: 'start',
           width: '100%',
           justifyContent: isActiveGenFace ? 'space-between' : 'start'
-        } : {}}>
-          {result !== '/' && isActiveGenFace &&
+        } :
+            { display: !isActiveAgeGender && !isActiveGenFace ? 'none' : 'flex'}}
+        >
+          {isActiveGenFace &&
 						<div className={styles.imageContainer}>
               {imgTaskStatus === TaskStatuses.FINISHED ? (!image_url ?
                   <img
-                    style={{border: '1px solid #C0C0C0'}}
+                    style={{ border: '1px solid #C0C0C0' }}
                     src={unanimous}
                     width={93}
                     height={93}
@@ -88,35 +90,40 @@ const OperationResultScreen: FC<ProgressBarProps> = ({
                     fillTransparencyColor="white"
                   />) :
                 <img
-                  style={{marginRight: '9px'}}
                   className={styles.additionalLoader}
                   src={loaderImage}
                   alt=""
                 />}
-						</div>}
-          {result !== '/' && isActiveAgeGender && (<div className="ageGender-wrapper">
-            <div className={cn(styles.generatedAgeGenderText, styles.spacing)}>
-              <div className={styles.contentTextWrapper}>
-                <div className={styles.titleWrapper}>Age</div>
-                <div
-                  className={styles.titleContent}>{age ? (period(+age)) : '?'}</div>
-              </div>
-              <div className={styles.contentTextWrapper}>
-                <div className={styles.titleWrapper}>Gender</div>
-                <div
-                  className={styles.titleContent}>{gender ? (gender === '[0]' ? 'male' : 'female') : '?'}</div>
+						</div>
+          }
+          {isActiveAgeGender && (
+            <div>
+              <div className={cn(styles.generatedAgeGenderText, styles.spacing)}>
+                <div className={styles.contentTextWrapper}>
+                  <div className={styles.titleWrapper}>Age</div>
+                  <div
+                    className={styles.titleContent}>{age ? (period(+age)) : '?'}</div>
+                </div>
+                <div className={styles.contentTextWrapper}>
+                  <div className={styles.titleWrapper}>Gender</div>
+                  <div
+                    className={styles.titleContent}>{gender ? (gender === '[0]' ? 'male' : 'female') : '?'}</div>
+                </div>
               </div>
             </div>
-          </div>)}
+          )}
         </div>
         }
       </div>
 
-      {(result === 'fraud-detected' || result === 'timeout-exceeded' || result === 'voice-not-verified' || result === 'enroll-not-passed') &&
+      {(result === ActionStatuses.FRAUD_DETECTED ||
+          result === ActionStatuses.TIMEOUT_EXCEEDED ||
+          result === ActionStatuses.NOT_VERIFIED ||
+          result === ActionStatuses.ENROLL_NOT_PASSED) &&
 				<div className={styles.actionWrapper}>
 					<div
 						className={styles.actionContainer}
-						onClick={onReset}>
+						onClick={onRestart}>
 						<img src={restart} alt="restart"/>
 						<div className={styles.restartTitle}>
 							Restart verification
