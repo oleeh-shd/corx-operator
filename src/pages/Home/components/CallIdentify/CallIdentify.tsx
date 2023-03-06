@@ -9,9 +9,10 @@ import { emitCommand } from '../../../../utils/helpers/emitCommand';
 import { socket } from '../../../../utils/helpers/connection';
 import { TaskType } from '../../../../utils/enum/taskType';
 import { useCallInfoStore } from '../../../../stores/useCallInfo';
+import { ActionStatuses } from '../../../../utils/enum/actionStatuses';
 
 type ButtonProps = {
-  result: string;
+  result: ActionStatuses;
 };
 
 const CallIdentify: FC<ButtonProps> = ({ result }) => {
@@ -40,8 +41,8 @@ const CallIdentify: FC<ButtonProps> = ({ result }) => {
       <img
         className={cn(
           styles.statusIcon,
-          result === 'voice-verified' && styles.isSuccessIcon,
-          result === 'voice-verified' || (isEnroll && styles.isEnrollIcon)
+          result === ActionStatuses.VERIFIED && styles.isSuccessIcon,
+          result === ActionStatuses.VERIFIED || (isEnroll && styles.isEnrollIcon)
         )}
         src={icon}
         alt=""
