@@ -12,7 +12,7 @@ export const statusesMap = new Map([
       icon: errorIcon,
       isSuccess: false,
       btnText: 'Try again',
-      type: 'hide'
+      type: 'hide',
     },
   ],
   [
@@ -22,7 +22,7 @@ export const statusesMap = new Map([
       icon: fraudDetectedIcon,
       isSuccess: false,
       btnText: 'Try again',
-      type: 'hide'
+      type: 'hide',
     },
   ],
   [
@@ -31,8 +31,8 @@ export const statusesMap = new Map([
       text: 'Verified',
       icon: successIcon,
       isSuccess: true,
-      btnText: 'Ok',
-      type: 'hide'
+      btnText: 'OK',
+      type: 'hide',
     },
   ],
   [
@@ -42,7 +42,7 @@ export const statusesMap = new Map([
       icon: errorIcon,
       isSuccess: false,
       btnText: 'Try again',
-      type: 'hide'
+      type: 'hide',
     },
   ],
   [
@@ -51,8 +51,9 @@ export const statusesMap = new Map([
       text: 'Voice signature creation failed',
       icon: enrollFailed,
       isEnroll: true,
+      isSuccess: false,
       btnText: 'Try again',
-      type: 'hide'
+      type: 'show',
     },
   ],
   [
@@ -61,8 +62,9 @@ export const statusesMap = new Map([
       text: `Voice signature created successfully`,
       icon: enrollDone,
       isEnroll: true,
-      btnText: 'Ok',
-      type: 'hide'
+      isSuccess: true,
+      btnText: 'OK',
+      type: 'show',
     },
   ],
 ]);

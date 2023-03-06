@@ -9,7 +9,7 @@ interface TaskData {
   is_success?: boolean;
 }
 
-interface EnrollInfo {
+export interface EnrollInfo {
   audio_id: string;
   task_id: string;
   task_type: TaskType;

@@ -7,6 +7,7 @@ import styles from './OngoingScreen.module.scss';
 type OngoingScreenProps = {
   phoneNumber: string;
 };
+
 export const OngoingScreen: FC<OngoingScreenProps> = ({ phoneNumber }) => {
   const [width, setWidth] = useState(window.innerWidth | 0);
 
