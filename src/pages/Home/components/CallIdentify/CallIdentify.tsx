@@ -10,6 +10,7 @@ import { socket } from '../../../../utils/helpers/connection';
 import { TaskType } from '../../../../utils/enum/taskType';
 import { useCallInfoStore } from '../../../../stores/useCallInfo';
 import { ActionStatuses } from '../../../../utils/enum/actionStatuses';
+import { useVadInfoStore } from '../../../../stores/useVadllInfo';
 
 type ButtonProps = {
   result: ActionStatuses;
@@ -21,13 +22,15 @@ const CallIdentify: FC<ButtonProps> = ({ result }) => {
 
   const callId = useCallInfoStore((state) => state.call_id);
   const clientId = useCallInfoStore((state) => state.call_data.client.client_id);
+  const refreshVadTotalSeconds = useVadInfoStore((state) => state.refreshVadTotalSeconds);
 
   const handleEnrollResult = () => {
     if (isSuccess) {
       navigate('/');
       return;
     }
-    emitCommand(socket, 'start', TaskType.ENROLL, clientId, callId);
+    refreshVadTotalSeconds();
+    emitCommand(socket, 'start', TaskType.ENROLL, callId, clientId);
   };
 
   return (

@@ -6,8 +6,7 @@ export const emitCommand = (
   task_action: 'start' | 'finish',
   task_type: TaskType,
   call_id: string,
-  client_id?: string,
-
+  client_id?: string
 ): void => {
   socket.emit(
     'command',

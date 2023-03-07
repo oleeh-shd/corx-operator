@@ -14,17 +14,17 @@ import { TaskStatuses } from '../../utils/enum/taskStatuses';
 import { TaskType } from '../../utils/enum/taskType';
 import { socket } from '../../utils/helpers/connection';
 import { handleEventMessage } from '../../utils/helpers/handleEventMessage';
-import { useTimeout } from '../../utils/hooks/useTimeout';
 import CallerInfo from '../Home/components/CallerInfo/CallerInfo';
 import CallIdentify from '../Home/components/CallIdentify/CallIdentify';
 import Progressbar from '../Home/components/Progressbar/Progressbar';
 import OperationResultScreen from '../Home/components/OperationResultScreen/OperationResultScreen';
-
-const TIMEOUT_FOR_VERIFY = 20000;
+import { emitCommand } from '../../utils/helpers/emitCommand';
 
 export const Verify: FC = () => {
   const navigate = useNavigate();
 
+  const callId = useCallInfoStore((state) => state.call_id);
+  const clientId = useCallInfoStore((state) => state.call_data.client.client_id);
   const callStatus = useCallInfoStore((state) => state.call_status);
   const taskStatus = useVerifyInfoStore((state) => state.task_status);
   const isSuccess = useVerifyInfoStore((state) => state.task_data.is_success);
@@ -37,25 +37,25 @@ export const Verify: FC = () => {
   const updateVoiceToFaceInfo = useVoiceToFaceInfoStore((state) => state.updateVoiceToFaceInfo);
   const updateAntiSpoofInfo = useAntiSpoofInfoStore((state) => state.updateAntiSpoofInfo);
   const isActiveAntiSpoof = useOperationInfoStore((state) => state.isActiveAntiSpoof);
+  const isActiveAgeGender = useOperationInfoStore((state) => state.isActiveAgeGender);
+  const isActiveGenFace = useOperationInfoStore((state) => state.isActiveGenFace);
 
   const isSpoof = useAntiSpoofInfoStore((state) => state.task_data.is_spoof);
   const spoofTaskStatus = useAntiSpoofInfoStore((state) => state.task_status);
 
-  const isTimeExceeded = useTimeout(TIMEOUT_FOR_VERIFY);
+  const refreshVadTotalSeconds = useVadInfoStore((state) => state.refreshVadTotalSeconds);
 
   useEffect(() => {
     socket.on('event', (msg) => {
-      if (!isTimeExceeded) {
-        handleEventMessage(msg, {
-          updateCallInfo,
-          updateVerifyInfo,
-          updateVadInfo,
-          updateAgeInfo,
-          updateGenderInfo,
-          updateVoiceToFaceInfo,
-          updateAntiSpoofInfo,
-        });
-      }
+      handleEventMessage(msg, {
+        updateCallInfo,
+        updateVerifyInfo,
+        updateVadInfo,
+        updateAgeInfo,
+        updateGenderInfo,
+        updateVoiceToFaceInfo,
+        updateAntiSpoofInfo,
+      });
     });
 
     if (
@@ -71,19 +71,13 @@ export const Verify: FC = () => {
   }, [callStatus, taskStatus]);
 
   const checkResult = () => {
-    const verifyResult = isSuccess
-      ? ActionStatuses.VERIFIED
-      : isTimeExceeded
-      ? ActionStatuses.TIMEOUT_EXCEEDED
-      : ActionStatuses.NOT_VERIFIED;
+    const verifyResult = isSuccess ? ActionStatuses.VERIFIED : ActionStatuses.NOT_VERIFIED;
 
     const spoofResult =
       spoofTaskStatus === TaskStatuses.FINISHED
         ? isSpoof
           ? ActionStatuses.FRAUD_DETECTED
           : ActionStatuses.VERIFIED
-        : isTimeExceeded
-        ? ActionStatuses.TIMEOUT_EXCEEDED
         : ActionStatuses.NOT_VERIFIED;
 
     return !isActiveAntiSpoof ? verifyResult : spoofResult;
@@ -91,18 +85,28 @@ export const Verify: FC = () => {
 
   const status = () => {
     if (isActiveAntiSpoof) {
-      return spoofTaskStatus === TaskStatuses.FINISHED || isTimeExceeded;
+      return spoofTaskStatus === TaskStatuses.FINISHED;
     } else {
-      return taskStatus === TaskStatuses.FINISHED || isTimeExceeded;
+      return taskStatus === TaskStatuses.FINISHED;
     }
   };
+
+  const restartVerification = () => {
+    refreshVadTotalSeconds();
+    emitCommand(socket, 'start', TaskType.VERIFY, callId, clientId);
+    isActiveAntiSpoof && emitCommand(socket, 'start', TaskType.ANTI_SPOOF, callId);
+    isActiveAgeGender && emitCommand(socket, 'start', TaskType.AGE, callId);
+    isActiveAgeGender && emitCommand(socket, 'start', TaskType.GENDER, callId);
+    isActiveGenFace && emitCommand(socket, 'start', TaskType.VOICE_TO_FACE, callId);
+  };
+
   return (
     <>
       <CallerInfo animated isFinished={status()} />
       {status() ? (
         <>
           <CallIdentify result={checkResult()} />
-          <OperationResultScreen result={checkResult()} onRestart={() => console.log('')} />
+          <OperationResultScreen result={checkResult()} onRestart={restartVerification} />
         </>
       ) : (
         <Progressbar screenType={TaskType.VERIFY} />

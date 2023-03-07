@@ -10,6 +10,7 @@ import { useCallInfoStore } from '../../../../stores/useCallInfo';
 import { emitCommand } from '../../../../utils/helpers/emitCommand';
 import { useNavigate } from 'react-router-dom';
 import { socket } from '../../../../utils/helpers/connection';
+import { useVadInfoStore } from '../../../../stores/useVadllInfo';
 
 export const OperationScreen: FC = () => {
   const navigate = useNavigate();
@@ -21,15 +22,18 @@ export const OperationScreen: FC = () => {
   const isActiveAntiSpoof = useOperationInfoStore((state) => state.isActiveAntiSpoof);
   const isActiveGenFace = useOperationInfoStore((state) => state.isActiveGenFace);
   const updateOperationInfo = useOperationInfoStore((state) => state.updateOperationInfo);
+  const refreshVadTotalSeconds = useVadInfoStore((state) => state.refreshVadTotalSeconds);
 
   const [speakerName, setSpeakerName] = useState('');
 
   const onClickEnroll = () => {
-    emitCommand(socket, 'start', TaskType.ENROLL, clientId, callId);
+    refreshVadTotalSeconds();
+    emitCommand(socket, 'start', TaskType.ENROLL, callId, clientId);
     navigate('/enroll');
   };
   const onClickVerify = () => {
-    emitCommand(socket, 'start', TaskType.VERIFY, clientId, callId);
+    refreshVadTotalSeconds();
+    emitCommand(socket, 'start', TaskType.VERIFY, callId, clientId);
     isActiveAntiSpoof && emitCommand(socket, 'start', TaskType.ANTI_SPOOF, callId);
     isActiveAgeGender && emitCommand(socket, 'start', TaskType.AGE, callId);
     isActiveAgeGender && emitCommand(socket, 'start', TaskType.GENDER, callId);
@@ -55,7 +59,7 @@ export const OperationScreen: FC = () => {
         />
         <div className={styles.buttonWrapper}>
           <Button onClick={onClickEnroll} isDisabled={!speakerName.length} titleBtn="Enroll" />
-          <Button onClick={onClickVerify} isDisabled={!!hasSignature} titleBtn="Verify" />
+          <Button onClick={onClickVerify} isDisabled={!hasSignature} titleBtn="Verify" />
         </div>
       </div>
       <div className={styles.settings}>

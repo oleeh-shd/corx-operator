@@ -21,10 +21,7 @@ type CallerInfoProps = {
   isFinished: boolean;
 };
 
-const CallerInfo: FC<CallerInfoProps> = ({
-   animated,
-   isFinished,
-}) => {
+const CallerInfo: FC<CallerInfoProps> = ({ animated, isFinished }) => {
   const navigate = useNavigate();
 
   const callerPhoneNumber = useCallInfoStore((state) => state.call_data.from);
@@ -37,8 +34,8 @@ const CallerInfo: FC<CallerInfoProps> = ({
   const clientId = useCallInfoStore((state) => state.call_data.client.client_id);
 
   const onClickEnroll = () => {
-    refreshVadTotalSeconds()
-    emitCommand(socket, 'start', TaskType.ENROLL, clientId, callId);
+    refreshVadTotalSeconds();
+    emitCommand(socket, 'start', TaskType.ENROLL, callId, clientId);
     navigate('/enroll');
   };
 
@@ -53,11 +50,11 @@ const CallerInfo: FC<CallerInfoProps> = ({
         <div className={styles.timerWrapper}>
           {animated ? (
             <div className={styles.lineWrapper}>
-              <img className={styles.lineTwo} src={pulseLeft} alt="part one"/>
-              <img className={styles.lineOne} src={pulseRight} alt="part two"/>
+              <img className={styles.lineTwo} src={pulseLeft} alt="part one" />
+              <img className={styles.lineOne} src={pulseRight} alt="part two" />
             </div>
           ) : (
-            <img src={pulse} alt="pulse"/>
+            <img src={pulse} alt="pulse" />
           )}
           {/*  //TODO Add total call time after back-end return them*/}
           {/*<div>{duration}</div>*/}
@@ -73,7 +70,8 @@ const CallerInfo: FC<CallerInfoProps> = ({
               : 'Voice signature not created'}
           </div>
         </div>
-        {isFinished && <Button
+        {isFinished && (
+          <Button
             styled={styles.styled}
             onClick={() => onClickEnroll()}
             titleBtn={
@@ -82,7 +80,8 @@ const CallerInfo: FC<CallerInfoProps> = ({
                 <div>Update</div>
               </>
             }
-          ></Button>}
+          ></Button>
+        )}
       </div>
     </div>
   );
