@@ -5,11 +5,12 @@ import styles from './callIdentify.module.scss';
 import { statusesMap } from '../../../../utils/helpers/statuses';
 import Button from '../Button/Button';
 import { useNavigate } from 'react-router-dom';
-import { emitCommand } from '../../../../utils/helpers/emitCommand';
+import { emitCommand, EmitCommandParams } from '../../../../utils/helpers/emitCommand';
 import { socket } from '../../../../utils/helpers/connection';
 import { TaskType } from '../../../../utils/enum/taskType';
 import { useCallInfoStore } from '../../../../stores/useCallInfo';
 import { ActionStatuses } from '../../../../utils/enum/actionStatuses';
+import { useVadInfoStore } from '../../../../stores/useVadllInfo';
 
 type ButtonProps = {
   result: ActionStatuses;
@@ -21,13 +22,23 @@ const CallIdentify: FC<ButtonProps> = ({ result }) => {
 
   const callId = useCallInfoStore((state) => state.call_id);
   const clientId = useCallInfoStore((state) => state.call_data.client.client_id);
+  const refreshVadTotalSeconds = useVadInfoStore((state) => state.refreshVadTotalSeconds);
 
   const handleEnrollResult = () => {
     if (isSuccess) {
       navigate('/');
       return;
     }
-    emitCommand(socket, 'start', TaskType.ENROLL, clientId, callId);
+
+    const params: EmitCommandParams = {
+      socket,
+      task_type: TaskType.ENROLL,
+      call_id: callId,
+      client_id: clientId,
+    };
+
+    refreshVadTotalSeconds();
+    emitCommand(params);
   };
 
   return (

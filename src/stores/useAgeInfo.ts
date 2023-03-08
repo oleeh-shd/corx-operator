@@ -3,14 +3,14 @@ import { TaskStatuses } from '../utils/enum/taskStatuses';
 import { TaskType } from '../utils/enum/taskType';
 
 interface TaskData {
-  "age": string;
+  age: string;
 }
 
 export interface AgeInfo {
   audio_id: string;
   task_id: string;
   task_type: TaskType;
-  task_status: TaskStatuses;
+  task_status: TaskStatuses | '';
   task_data: TaskData;
 }
 
@@ -22,9 +22,9 @@ export const useAgeInfoStore = create<AgeInfoStore>((set) => ({
   audio_id: '',
   task_id: '',
   task_type: TaskType.VERIFY,
-  task_status: TaskStatuses.WAITING,
+  task_status: '',
   task_data: {
-    age: ''
+    age: '',
   },
   updateAgeInfo: (newInfo: AgeInfo) => set(newInfo),
 }));

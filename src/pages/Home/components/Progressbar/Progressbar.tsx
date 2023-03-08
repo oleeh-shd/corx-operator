@@ -15,17 +15,20 @@ type ProgressBarProps = {
   screenType: TaskType;
 };
 
+const SECONDS_FOR_VERIFY = 10;
+const SECONDS_FOR_ENROLL = 30;
+
 const Progressbar: FC<ProgressBarProps> = ({ screenType }) => {
   const [width, setWidth] = useState(0);
-  const required_seconds = useVadInfoStore((state) => state.task_data.required_seconds);
   const total_seconds = useVadInfoStore((state) => state.task_data.total_seconds);
 
-  const getPulseWidth = (num: number) => 130 / num;
+  const getPulseWidth = (num: number) => Math.round(130 / num);
 
   useEffect(() => {
-    if (required_seconds) {
-      setWidth((prev) => prev + getPulseWidth(required_seconds));
-    }
+    const requiredTalkingTime =
+      screenType === TaskType.VERIFY ? SECONDS_FOR_VERIFY : SECONDS_FOR_ENROLL;
+
+    setWidth((prev) => prev + getPulseWidth(requiredTalkingTime));
   }, [total_seconds]);
 
   return (

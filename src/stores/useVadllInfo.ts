@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { TaskStatuses } from '../utils/enum/taskStatuses';
 
 interface TaskData {
   total_seconds: number;
@@ -23,7 +22,7 @@ export const useVadInfoStore = create<VadInfoStore>((set) => ({
   audio_id: '',
   task_id: '',
   task_type: '',
-  task_status: TaskStatuses.WAITING,
+  task_status: '',
   task_data: {
     total_seconds: 0,
   },

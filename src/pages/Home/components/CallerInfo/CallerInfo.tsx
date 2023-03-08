@@ -11,7 +11,7 @@ import { useVadInfoStore } from '../../../../stores/useVadllInfo';
 import { TaskType } from '../../../../utils/enum/taskType';
 import { socket } from '../../../../utils/helpers/connection';
 import { createdAt } from '../../../../utils/helpers/createdAt';
-import { emitCommand } from '../../../../utils/helpers/emitCommand';
+import { emitCommand, EmitCommandParams } from '../../../../utils/helpers/emitCommand';
 import Button from '../Button/Button';
 
 import styles from './CallerInfo.module.scss';
@@ -21,10 +21,7 @@ type CallerInfoProps = {
   isFinished: boolean;
 };
 
-const CallerInfo: FC<CallerInfoProps> = ({
-   animated,
-   isFinished,
-}) => {
+const CallerInfo: FC<CallerInfoProps> = ({ animated, isFinished }) => {
   const navigate = useNavigate();
 
   const callerPhoneNumber = useCallInfoStore((state) => state.call_data.from);
@@ -37,8 +34,15 @@ const CallerInfo: FC<CallerInfoProps> = ({
   const clientId = useCallInfoStore((state) => state.call_data.client.client_id);
 
   const onClickEnroll = () => {
-    refreshVadTotalSeconds()
-    emitCommand(socket, 'start', TaskType.ENROLL, clientId, callId);
+    const params: EmitCommandParams = {
+      socket,
+      task_type: TaskType.ENROLL,
+      call_id: callId,
+      client_id: clientId,
+    };
+
+    refreshVadTotalSeconds();
+    emitCommand(params);
     navigate('/enroll');
   };
 
@@ -53,11 +57,11 @@ const CallerInfo: FC<CallerInfoProps> = ({
         <div className={styles.timerWrapper}>
           {animated ? (
             <div className={styles.lineWrapper}>
-              <img className={styles.lineTwo} src={pulseLeft} alt="part one"/>
-              <img className={styles.lineOne} src={pulseRight} alt="part two"/>
+              <img className={styles.lineTwo} src={pulseLeft} alt="part one" />
+              <img className={styles.lineOne} src={pulseRight} alt="part two" />
             </div>
           ) : (
-            <img src={pulse} alt="pulse"/>
+            <img src={pulse} alt="pulse" />
           )}
           {/*  //TODO Add total call time after back-end return them*/}
           {/*<div>{duration}</div>*/}
@@ -73,7 +77,8 @@ const CallerInfo: FC<CallerInfoProps> = ({
               : 'Voice signature not created'}
           </div>
         </div>
-        {isFinished && <Button
+        {isFinished && (
+          <Button
             styled={styles.styled}
             onClick={() => onClickEnroll()}
             titleBtn={
@@ -82,7 +87,8 @@ const CallerInfo: FC<CallerInfoProps> = ({
                 <div>Update</div>
               </>
             }
-          ></Button>}
+          ></Button>
+        )}
       </div>
     </div>
   );
