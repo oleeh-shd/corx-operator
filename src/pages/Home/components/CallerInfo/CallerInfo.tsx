@@ -11,7 +11,7 @@ import { useVadInfoStore } from '../../../../stores/useVadllInfo';
 import { TaskType } from '../../../../utils/enum/taskType';
 import { socket } from '../../../../utils/helpers/connection';
 import { createdAt } from '../../../../utils/helpers/createdAt';
-import { emitCommand } from '../../../../utils/helpers/emitCommand';
+import { emitCommand, EmitCommandParams } from '../../../../utils/helpers/emitCommand';
 import Button from '../Button/Button';
 
 import styles from './CallerInfo.module.scss';
@@ -34,8 +34,15 @@ const CallerInfo: FC<CallerInfoProps> = ({ animated, isFinished }) => {
   const clientId = useCallInfoStore((state) => state.call_data.client.client_id);
 
   const onClickEnroll = () => {
+    const params: EmitCommandParams = {
+      socket,
+      task_type: TaskType.ENROLL,
+      call_id: callId,
+      client_id: clientId,
+    };
+
     refreshVadTotalSeconds();
-    emitCommand(socket, 'start', TaskType.ENROLL, callId, clientId);
+    emitCommand(params);
     navigate('/enroll');
   };
 

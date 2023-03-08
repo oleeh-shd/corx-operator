@@ -5,7 +5,7 @@ import styles from './callIdentify.module.scss';
 import { statusesMap } from '../../../../utils/helpers/statuses';
 import Button from '../Button/Button';
 import { useNavigate } from 'react-router-dom';
-import { emitCommand } from '../../../../utils/helpers/emitCommand';
+import { emitCommand, EmitCommandParams } from '../../../../utils/helpers/emitCommand';
 import { socket } from '../../../../utils/helpers/connection';
 import { TaskType } from '../../../../utils/enum/taskType';
 import { useCallInfoStore } from '../../../../stores/useCallInfo';
@@ -29,8 +29,16 @@ const CallIdentify: FC<ButtonProps> = ({ result }) => {
       navigate('/');
       return;
     }
+
+    const params: EmitCommandParams = {
+      socket,
+      task_type: TaskType.ENROLL,
+      call_id: callId,
+      client_id: clientId,
+    };
+
     refreshVadTotalSeconds();
-    emitCommand(socket, 'start', TaskType.ENROLL, callId, clientId);
+    emitCommand(params);
   };
 
   return (

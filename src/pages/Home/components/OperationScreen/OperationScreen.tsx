@@ -7,7 +7,7 @@ import Toggle from '../Toggler/Toggle';
 
 import styles from './operationScreen.module.scss';
 import { useCallInfoStore } from '../../../../stores/useCallInfo';
-import { emitCommand } from '../../../../utils/helpers/emitCommand';
+import { emitCommand, EmitCommandParams } from '../../../../utils/helpers/emitCommand';
 import { useNavigate } from 'react-router-dom';
 import { socket } from '../../../../utils/helpers/connection';
 import { useVadInfoStore } from '../../../../stores/useVadllInfo';
@@ -27,17 +27,32 @@ export const OperationScreen: FC = () => {
   const [speakerName, setSpeakerName] = useState('');
 
   const onClickEnroll = () => {
+    const params: EmitCommandParams = {
+      socket,
+      task_type: TaskType.ENROLL,
+      call_id: callId,
+      client_id: clientId,
+    };
+
     refreshVadTotalSeconds();
-    emitCommand(socket, 'start', TaskType.ENROLL, callId, clientId);
+    emitCommand(params);
     navigate('/enroll');
   };
   const onClickVerify = () => {
+    const params: EmitCommandParams = {
+      socket,
+      task_type: TaskType.VERIFY,
+      call_id: callId,
+      client_id: clientId,
+    };
+
     refreshVadTotalSeconds();
-    emitCommand(socket, 'start', TaskType.VERIFY, callId, clientId);
-    isActiveAntiSpoof && emitCommand(socket, 'start', TaskType.ANTI_SPOOF, callId);
-    isActiveAgeGender && emitCommand(socket, 'start', TaskType.AGE, callId);
-    isActiveAgeGender && emitCommand(socket, 'start', TaskType.GENDER, callId);
-    isActiveGenFace && emitCommand(socket, 'start', TaskType.VOICE_TO_FACE, callId);
+    emitCommand(params);
+
+    isActiveAntiSpoof && emitCommand({ socket, task_type: TaskType.ANTI_SPOOF, call_id: callId });
+    isActiveAgeGender && emitCommand({ socket, task_type: TaskType.AGE, call_id: callId });
+    isActiveAgeGender && emitCommand({ socket, task_type: TaskType.GENDER, call_id: callId });
+    isActiveGenFace && emitCommand({ socket, task_type: TaskType.VOICE_TO_FACE, call_id: callId });
 
     navigate('/verify');
   };

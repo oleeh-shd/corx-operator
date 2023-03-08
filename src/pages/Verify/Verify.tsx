@@ -18,7 +18,7 @@ import CallerInfo from '../Home/components/CallerInfo/CallerInfo';
 import CallIdentify from '../Home/components/CallIdentify/CallIdentify';
 import Progressbar from '../Home/components/Progressbar/Progressbar';
 import OperationResultScreen from '../Home/components/OperationResultScreen/OperationResultScreen';
-import { emitCommand } from '../../utils/helpers/emitCommand';
+import { emitCommand, EmitCommandParams } from '../../utils/helpers/emitCommand';
 
 export const Verify: FC = () => {
   const navigate = useNavigate();
@@ -92,12 +92,20 @@ export const Verify: FC = () => {
   };
 
   const restartVerification = () => {
+    const params: EmitCommandParams = {
+      socket,
+      task_type: TaskType.VERIFY,
+      call_id: callId,
+      client_id: clientId,
+    };
+
     refreshVadTotalSeconds();
-    emitCommand(socket, 'start', TaskType.VERIFY, callId, clientId);
-    isActiveAntiSpoof && emitCommand(socket, 'start', TaskType.ANTI_SPOOF, callId);
-    isActiveAgeGender && emitCommand(socket, 'start', TaskType.AGE, callId);
-    isActiveAgeGender && emitCommand(socket, 'start', TaskType.GENDER, callId);
-    isActiveGenFace && emitCommand(socket, 'start', TaskType.VOICE_TO_FACE, callId);
+    emitCommand(params);
+
+    isActiveAntiSpoof && emitCommand({ socket, task_type: TaskType.ANTI_SPOOF, call_id: callId });
+    isActiveAgeGender && emitCommand({ socket, task_type: TaskType.AGE, call_id: callId });
+    isActiveAgeGender && emitCommand({ socket, task_type: TaskType.GENDER, call_id: callId });
+    isActiveGenFace && emitCommand({ socket, task_type: TaskType.VOICE_TO_FACE, call_id: callId });
   };
 
   return (
