@@ -99,13 +99,15 @@ export const Verify: FC = () => {
       client_id: clientId,
     };
 
+    const { client_id, ...optionalParams } = params;
+
     refreshVadTotalSeconds();
     emitCommand(params);
 
-    isActiveAntiSpoof && emitCommand({ socket, task_type: TaskType.ANTI_SPOOF, call_id: callId });
-    isActiveAgeGender && emitCommand({ socket, task_type: TaskType.AGE, call_id: callId });
-    isActiveAgeGender && emitCommand({ socket, task_type: TaskType.GENDER, call_id: callId });
-    isActiveGenFace && emitCommand({ socket, task_type: TaskType.VOICE_TO_FACE, call_id: callId });
+    isActiveAntiSpoof && emitCommand({ ...optionalParams, task_type: TaskType.ANTI_SPOOF });
+    isActiveAgeGender && emitCommand({ ...optionalParams, task_type: TaskType.AGE });
+    isActiveAgeGender && emitCommand({ ...optionalParams, task_type: TaskType.GENDER });
+    isActiveGenFace && emitCommand({ ...optionalParams, task_type: TaskType.VOICE_TO_FACE });
   };
 
   return (
